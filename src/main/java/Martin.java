@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Martin {
@@ -23,7 +24,7 @@ public class Martin {
         start();
 
         try (Scanner scanner = new Scanner(System.in)) {
-            ArrayList<String> tasks = new ArrayList<>();
+            List<Task> tasks = new ArrayList<>();
             String input = "";
             while (!input.equals("bye")) {
                 System.out.print("> " + GRAY);
@@ -32,34 +33,69 @@ public class Martin {
                 System.out.println(HORIZ_LINE);
 
                 if (input.equals("list")) {
-                    printTasks(tasks);
-                    System.out.println(HORIZ_LINE);
+                    System.out.println("Here are the tasks in your list:");
+                    Task.printTasks(tasks);
+                } else if (input.startsWith("mark ")) {
+                    Task task = findTask(tasks, input);
+                    if (task == null) {
+                        System.out.println("I can't find that task. Use a number shown by list.");
+                    } else {
+                        handleMarkTaskAsDone(task);
+                    }
+                } else if (input.startsWith("unmark ")) {
+                    Task task = findTask(tasks, input);
+                    if (task == null) {
+                        System.out.println("I can't find that task. Use a number shown by list.");
+                    } else {
+                        handleMarkTaskAsNotDone(task);
+                    }
                 } else if (!input.equals("bye")) {
-                    tasks.add(input);
+                    tasks.add(Task.of(input));
                     System.out.println("added: " + input);
-                    System.out.println(HORIZ_LINE);
                 }
+                System.out.println(HORIZ_LINE);
             }
         }
         goodbye();
     }
 
-    public static void start() {
+    private static void start() {
         System.out.println(HORIZ_LINE);
         System.out.println(BANNER);
         System.out.println(GREETING);
         System.out.println(HORIZ_LINE);
     }
 
-    public static void goodbye() {
+    private static void goodbye() {
         System.out.println(GOODBYE);
         System.out.println(HORIZ_LINE);
     }
 
-    /** Prints the tasks in the order that the user entered them. */
-    private static void printTasks(ArrayList<String> tasks) {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
+    /**
+     * Returns the task selected by a one-based command index, or {@code null} when
+     * it is invalid.
+     */
+    private static Task findTask(List<Task> tasks, String input) {
+        try {
+            int taskNumber = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                return null;
+            }
+            return tasks.get(taskNumber - 1);
+        } catch (NumberFormatException exception) {
+            return null;
         }
+    }
+
+    private static void handleMarkTaskAsDone(Task task) {
+        task.markAsDone();
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println(task);
+    }
+
+    private static void handleMarkTaskAsNotDone(Task task) {
+        task.markAsNotDone();
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println(task);
     }
 }
