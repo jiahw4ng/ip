@@ -33,9 +33,10 @@ public class Martin {
                 System.out.println(HORIZ_LINE);
 
                 if (input.equals("list")) {
-                    System.out.println("Here are the tasks in your list:");
-                    Task.printTasks(tasks);
+                    // print the list of tasks, or a message if there are none
+                    printList(tasks);
                 } else if (input.startsWith("mark ")) {
+                    // mark the task as done, or print an error message if the task number is invalid
                     Task task = findTask(tasks, input);
                     if (task == null) {
                         System.out.println("I can't find that task. Use a number shown by list.");
@@ -43,6 +44,7 @@ public class Martin {
                         handleMarkTaskAsDone(task);
                     }
                 } else if (input.startsWith("unmark ")) {
+                    // unmark the task as done, or print an error message if the task number is invalid
                     Task task = findTask(tasks, input);
                     if (task == null) {
                         System.out.println("I can't find that task. Use a number shown by list.");
@@ -50,6 +52,7 @@ public class Martin {
                         handleMarkTaskAsNotDone(task);
                     }
                 } else if (!input.equals("bye")) {
+                    // create a new task, or print an error message if the command is invalid
                     try {
                         Task newTask = Task.of(input);
                         tasks.add(newTask);
@@ -76,6 +79,17 @@ public class Martin {
     private static void goodbye() {
         System.out.println(GOODBYE);
         System.out.println(HORIZ_LINE);
+    }
+
+    private static void printList(List<Task> tasks) {
+
+        if (tasks.isEmpty()) {
+            System.out.println("You have no tasks in your list!");
+            return;
+        }
+
+        System.out.println("Here are the tasks in your list:");
+        Task.printTasks(tasks);
     }
 
     /**
