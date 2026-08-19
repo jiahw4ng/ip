@@ -50,8 +50,15 @@ public class Martin {
                         handleMarkTaskAsNotDone(task);
                     }
                 } else if (!input.equals("bye")) {
-                    tasks.add(Task.of(input));
-                    System.out.println("added: " + input);
+                    try {
+                        Task newTask = Task.of(input);
+                        tasks.add(newTask);
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println(newTask);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    } catch (IllegalArgumentException exception) {
+                        System.out.println(exception.getMessage());
+                    }
                 }
                 System.out.println(HORIZ_LINE);
             }
