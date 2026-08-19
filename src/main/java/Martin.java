@@ -51,6 +51,9 @@ public class Martin {
                     } else {
                         handleMarkTaskAsNotDone(task);
                     }
+                } else if (input.startsWith("delete ")) {
+                    // delete the task, or print an error message if the task number is invalid
+                    handleDeleteTask(tasks, input);
                 } else if (!input.equals("bye")) {
                     // create a new task, or print an error message if the command is invalid
                     try {
@@ -105,6 +108,18 @@ public class Martin {
             return tasks.get(taskNumber - 1);
         } catch (NumberFormatException exception) {
             return null;
+        }
+    }
+
+    private static void handleDeleteTask(List<Task> tasks, String input) {
+        Task task = findTask(tasks, input);
+        if (task == null) {
+            System.out.println("I can't find that task. Use a number shown by list.");
+        } else {
+            tasks.remove(task);
+            System.out.println("Noted. I've removed this task:");
+            System.out.println(task);
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
         }
     }
 
