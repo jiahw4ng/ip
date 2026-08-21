@@ -25,46 +25,28 @@ public class Martin {
 
         try (Scanner scanner = new Scanner(System.in)) {
             List<Task> tasks = new ArrayList<>();
-            String input = "";
-            while (!input.equals("bye")) {
+            boolean isRunning = true;
+            while (isRunning) {
                 System.out.print("> " + GRAY);
-                input = scanner.nextLine();
+                String input = scanner.nextLine();
                 System.out.print(RESET);
                 System.out.println(HORIZ_LINE);
 
-                if (input.equals("list")) {
-                    // print the list of tasks, or a message if there are none
-                    printList(tasks);
-                } else if (input.startsWith("mark ")) {
-                    // mark the task as done, or print an error message if the task number is invalid
-                    Task task = findTask(tasks, input);
-                    if (task == null) {
-                        System.out.println("I can't find that task. Use a number shown by list.");
-                    } else {
-                        handleMarkTaskAsDone(task);
+                try {
+                    if (input.trim().isEmpty()) {
+                        throw new IllegalArgumentException("I'm sorry, I don't know what that means.");
                     }
-                } else if (input.startsWith("unmark ")) {
-                    // unmark the task as done, or print an error message if the task number is invalid
-                    Task task = findTask(tasks, input);
-                    if (task == null) {
-                        System.out.println("I can't find that task. Use a number shown by list.");
-                    } else {
-                        handleMarkTaskAsNotDone(task);
+                    Command command = Command.from(input);
+                    switch (command) {
+                        case LIST -> printList(tasks);
+                        case MARK -> handleMarkTask(tasks, input, true);
+                        case UNMARK -> handleMarkTask(tasks, input, false);
+                        case DELETE -> handleDeleteTask(tasks, input);
+                        case TODO, DEADLINE, EVENT -> handleAddTask(tasks, input);
+                        case BYE -> isRunning = false;
                     }
-                } else if (input.startsWith("delete ")) {
-                    // delete the task, or print an error message if the task number is invalid
-                    handleDeleteTask(tasks, input);
-                } else if (!input.equals("bye")) {
-                    // create a new task, or print an error message if the command is invalid
-                    try {
-                        Task newTask = Task.of(input);
-                        tasks.add(newTask);
-                        System.out.println("Got it. I've added this task:");
-                        System.out.println(newTask);
-                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                    } catch (IllegalArgumentException exception) {
-                        System.out.println(exception.getMessage());
-                    }
+                } catch (IllegalArgumentException exception) {
+                    System.out.println(exception.getMessage());
                 }
                 System.out.println(HORIZ_LINE);
             }
@@ -120,6 +102,27 @@ public class Martin {
             System.out.println("Noted. I've removed this task:");
             System.out.println(task);
             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        }
+    }
+
+    /** Adds the task described by a valid task-creation command. */
+    private static void handleAddTask(List<Task> tasks, String input) {
+        Task newTask = Task.of(input);
+        tasks.add(newTask);
+        System.out.println("Got it. I've added this task:");
+        System.out.println(newTask);
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    /** Marks or unmarks the task selected by the command's one-based index. */
+    private static void handleMarkTask(List<Task> tasks, String input, boolean shouldMarkAsDone) {
+        Task task = findTask(tasks, input);
+        if (task == null) {
+            System.out.println("I can't find that task. Use a number shown by list.");
+        } else if (shouldMarkAsDone) {
+            handleMarkTaskAsDone(task);
+        } else {
+            handleMarkTaskAsNotDone(task);
         }
     }
 
