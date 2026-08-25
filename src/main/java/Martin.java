@@ -1,14 +1,17 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Chatbot application that manages and tracks user tasks.
+ */
 public class Martin {
     // ANSI escape codes used to colour the echoed user input in supported
     // terminals.
     private static final String GRAY = "\u001B[90m";
     private static final String RESET = "\u001B[0m";
 
-    public static final String BANNER = """
+    public static final String MARTIN_BANNER = """
             M   M   A   RRR  TTTTT I N   N
             MM MM  A A  R  R   T   I NN  N
             M M M AAAAA RRR    T   I N N N
@@ -17,124 +20,185 @@ public class Martin {
             """;
 
     public static final String HORIZ_LINE = "_____________________________________________________";
-    public static final String GREETING = "Hello! I'm Martin.\nWhat can I do for you?";
-    public static final String GOODBYE = "Bye. Hope to see you again soon!";
+    public static final String MARTIN_GREETING = "Hello! I'm Martin.\nWhat can I do for you?";
+    public static final String MARTIN_GOODBYE = "Bye. Hope to see you again soon!";
 
-    public static void main(String[] args) {
-        start();
+    private final TasksStorage storage;
+    private final List<Task> tasks;
+
+    /**
+     * Constructs a new {@code Martin} chatbot instance with the specified data file
+     * path.
+     *
+     * @param filePath the file path used to load and persist task data
+     */
+    public Martin(String filePath) {
+        this.storage = new TasksStorage(filePath);
+        this.tasks = this.storage.load();
+    }
+
+    /**
+     * Constructs a new {@code Martin} chatbot instance with the default data file
+     * path.
+     */
+    public Martin() {
+        this("./data/martin.txt");
+    }
+
+    /**
+     * Starts and runs the main execution loop for the Martin chatbot.
+     */
+    public void run() {
+        this.start();
 
         try (Scanner scanner = new Scanner(System.in)) {
-            List<Task> tasks = new ArrayList<>();
             boolean isRunning = true;
             while (isRunning) {
                 System.out.print("> " + GRAY);
-                String input = scanner.nextLine();
+                if (!scanner.hasNextLine()) {
+                    System.out.print(RESET);
+                    System.out.println();
+                    break;
+                }
+
+                String input;
+                try {
+                    input = scanner.nextLine();
+                } catch (NoSuchElementException | IllegalStateException exception) {
+                    System.out.print(RESET);
+                    System.out.println();
+                    break;
+                }
+
                 System.out.print(RESET);
                 System.out.println(HORIZ_LINE);
 
                 try {
                     if (input.trim().isEmpty()) {
-                        throw new IllegalArgumentException("I'm sorry, I don't know what that means.");
+                        throw new IllegalCommandException("I'm sorry, I don't know what that means.");
                     }
                     Command command = Command.from(input);
                     switch (command) {
-                        case LIST -> printList(tasks);
-                        case MARK -> handleMarkTask(tasks, input, true);
-                        case UNMARK -> handleMarkTask(tasks, input, false);
-                        case DELETE -> handleDeleteTask(tasks, input);
-                        case TODO, DEADLINE, EVENT -> handleAddTask(tasks, input);
+                        case LIST -> printList();
+                        case MARK -> handleMarkTask(input, true);
+                        case UNMARK -> handleMarkTask(input, false);
+                        case DELETE -> handleDeleteTask(input);
+                        case TODO, DEADLINE, EVENT -> handleAddTask(input);
                         case BYE -> isRunning = false;
                     }
-                } catch (IllegalArgumentException exception) {
+                } catch (IllegalCommandException exception) {
                     System.out.println(exception.getMessage());
                 }
                 System.out.println(HORIZ_LINE);
             }
         }
-        goodbye();
+        this.goodbye();
     }
 
-    private static void start() {
+    /**
+     * Prints the initial greeting message and banner.
+     */
+    private void start() {
         System.out.println(HORIZ_LINE);
-        System.out.println(BANNER);
-        System.out.println(GREETING);
-        System.out.println(HORIZ_LINE);
-    }
-
-    private static void goodbye() {
-        System.out.println(GOODBYE);
+        System.out.println(MARTIN_BANNER);
+        System.out.println(MARTIN_GREETING);
         System.out.println(HORIZ_LINE);
     }
 
-    private static void printList(List<Task> tasks) {
+    /**
+     * Prints the goodbye message.
+     */
+    private void goodbye() {
+        System.out.println(MARTIN_GOODBYE);
+        System.out.println(HORIZ_LINE);
+    }
 
-        if (tasks.isEmpty()) {
+    /**
+     * Prints all tasks currently in the task list.
+     */
+    private void printList() {
+        if (this.tasks.isEmpty()) {
             System.out.println("You have no tasks in your list!");
             return;
         }
 
         System.out.println("Here are the tasks in your list:");
-        Task.printTasks(tasks);
+        Task.printTasks(this.tasks);
     }
 
     /**
      * Returns the task selected by a one-based command index, or {@code null} when
      * it is invalid.
+     *
+     * @param input the user input containing the task number
+     * @return the selected {@code Task}, or {@code null} if the index is invalid
      */
-    private static Task findTask(List<Task> tasks, String input) {
+    private Task findTaskFromInput(String input) {
         try {
             int taskNumber = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
-            if (taskNumber < 1 || taskNumber > tasks.size()) {
+            if (taskNumber < 1 || taskNumber > this.tasks.size()) {
                 return null;
             }
-            return tasks.get(taskNumber - 1);
+            return this.tasks.get(taskNumber - 1);
         } catch (NumberFormatException exception) {
             return null;
         }
     }
 
-    private static void handleDeleteTask(List<Task> tasks, String input) {
-        Task task = findTask(tasks, input);
+    /**
+     * Deletes the specified task from the list based on user input.
+     *
+     * @param input the user input containing the task index to delete
+     */
+    private void handleDeleteTask(String input) {
+        Task task = this.findTaskFromInput(input);
         if (task == null) {
             System.out.println("I can't find that task. Use a number shown by list.");
         } else {
-            tasks.remove(task);
+            this.tasks.remove(task);
+            this.storage.save(this.tasks);
             System.out.println("Noted. I've removed this task:");
             System.out.println(task);
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            System.out.printf("Now you have %d tasks in the list.%n", this.tasks.size());
         }
     }
 
-    /** Adds the task described by a valid task-creation command. */
-    private static void handleAddTask(List<Task> tasks, String input) {
+    /**
+     * Adds the task described by a valid task-creation command.
+     *
+     * @param input the task command input string
+     */
+    private void handleAddTask(String input) {
         Task newTask = Task.of(input);
-        tasks.add(newTask);
+        this.tasks.add(newTask);
+        this.storage.save(this.tasks);
         System.out.println("Got it. I've added this task:");
         System.out.println(newTask);
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.printf("Now you have %d tasks in the list.%n", this.tasks.size());
     }
 
-    /** Marks or unmarks the task selected by the command's one-based index. */
-    private static void handleMarkTask(List<Task> tasks, String input, boolean shouldMarkAsDone) {
-        Task task = findTask(tasks, input);
+    /**
+     * Marks or unmarks the task selected by the command's one-based index.
+     *
+     * @param input            the user input containing the task index
+     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark
+     *                         as not done
+     */
+    private void handleMarkTask(String input, boolean shouldMarkAsDone) {
+        Task task = this.findTaskFromInput(input);
         if (task == null) {
             System.out.println("I can't find that task. Use a number shown by list.");
         } else if (shouldMarkAsDone) {
-            handleMarkTaskAsDone(task);
+            task.markAsDone();
+            this.storage.save(this.tasks);
+            System.out.println("Nice! I've marked this task as done:");
+            System.out.println(task);
         } else {
-            handleMarkTaskAsNotDone(task);
+            task.markAsNotDone();
+            this.storage.save(this.tasks);
+            System.out.println("OK, I've marked this task as not done yet:");
+            System.out.println(task);
         }
     }
 
-    private static void handleMarkTaskAsDone(Task task) {
-        task.markAsDone();
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
-    }
-
-    private static void handleMarkTaskAsNotDone(Task task) {
-        task.markAsNotDone();
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
-    }
 }
