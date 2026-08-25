@@ -18,11 +18,12 @@ public enum Command {
   }
 
   /**
-   * Returns the {@code Command} enum constant corresponding to the keyword in the input.
+   * Returns the {@code Command} enum constant corresponding to the keyword in the
+   * input.
    *
    * @param input the raw input string entered by the user
    * @return the matching {@code Command}
-   * @throws IllegalArgumentException if the command word is unrecognized
+   * @throws IllegalCommandException if the command word is unrecognized
    */
   public static Command from(String input) {
     String commandWord = input.trim().split("\\s+", 2)[0];
@@ -31,7 +32,7 @@ public enum Command {
         return type;
       }
     }
-    throw new IllegalArgumentException("I'm sorry, I don't know what that means.");
+    throw new IllegalCommandException("I'm sorry, I don't know what that means.");
   }
 
 }

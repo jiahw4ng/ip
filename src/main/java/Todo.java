@@ -22,7 +22,7 @@ public class Todo extends Task {
    *
    * @param input the command string entered by the user
    * @return the created {@code Todo} task
-   * @throws IllegalArgumentException if the description is missing
+   * @throws IllegalCommandException if the description is missing
    */
   public static Todo createTodo(String input) {
     String details = input.substring("todo".length()).trim();

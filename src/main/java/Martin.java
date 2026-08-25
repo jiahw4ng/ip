@@ -42,7 +42,7 @@ public class Martin {
 
                 try {
                     if (input.trim().isEmpty()) {
-                        throw new IllegalArgumentException("I'm sorry, I don't know what that means.");
+                        throw new IllegalCommandException("I'm sorry, I don't know what that means.");
                     }
                     Command command = Command.from(input);
                     switch (command) {
@@ -53,7 +53,7 @@ public class Martin {
                         case TODO, DEADLINE, EVENT -> handleAddTask(tasks, input);
                         case BYE -> isRunning = false;
                     }
-                } catch (IllegalArgumentException exception) {
+                } catch (IllegalCommandException exception) {
                     System.out.println(exception.getMessage());
                 }
                 System.out.println(HORIZ_LINE);
@@ -151,9 +151,10 @@ public class Martin {
     /**
      * Marks or unmarks the task selected by the command's one-based index.
      *
-     * @param tasks the list of tasks
-     * @param input the user input containing the task index
-     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark as not done
+     * @param tasks            the list of tasks
+     * @param input            the user input containing the task index
+     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark
+     *                         as not done
      */
     private static void handleMarkTask(List<Task> tasks, String input, boolean shouldMarkAsDone) {
         Task task = findTask(tasks, input);

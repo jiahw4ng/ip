@@ -19,8 +19,8 @@ public abstract class Task {
    *
    * @param input the complete command entered by the user
    * @return the corresponding todo, deadline, or event
-   * @throws IllegalArgumentException if the command is unknown or is missing a
-   *                                  required value
+   * @throws IllegalCommandException if the command is unknown or is missing a
+   *                                 required value
    */
   public static Task of(String input) {
     if (input.startsWith("todo")) {
@@ -32,38 +32,40 @@ public abstract class Task {
     if (input.startsWith("event")) {
       return Event.createEvent(input);
     }
-    throw new IllegalArgumentException("I'm sorry, I don't know what that means!");
+    throw new IllegalCommandException("I'm sorry, I don't know what that means!");
   }
 
   /**
-   * Returns a trimmed command value, rejecting an empty value with a clear message.
+   * Returns a trimmed command value, rejecting an empty value with a clear
+   * message.
    *
-   * @param value the string to trim and validate
+   * @param value    the string to trim and validate
    * @param errorMsg the error message to throw if the value is empty
    * @return the trimmed non-empty string
-   * @throws IllegalArgumentException if the trimmed string is empty
+   * @throws IllegalCommandException if the trimmed string is empty
    */
   public static String requireValue(String value, String errorMsg) {
     String trimmedValue = value.trim();
     if (trimmedValue.isEmpty()) {
-      throw new IllegalArgumentException(errorMsg);
+      throw new IllegalCommandException(errorMsg);
     }
     return trimmedValue;
   }
 
   /**
-   * Returns the index of a substring, rejecting a missing substring with a clear message.
+   * Returns the index of a substring, rejecting a missing substring with a clear
+   * message.
    *
-   * @param str the string to search within
-   * @param substr the delimiter or substring to search for
+   * @param str      the string to search within
+   * @param substr   the delimiter or substring to search for
    * @param errorMsg the error message to throw if the substring is not found
    * @return the index of the substring
-   * @throws IllegalArgumentException if the substring is not found
+   * @throws IllegalCommandException if the substring is not found
    */
   public static int requireIndex(String str, String substr, String errorMsg) {
     int index = str.indexOf(substr);
     if (index < 0) {
-      throw new IllegalArgumentException(errorMsg);
+      throw new IllegalCommandException(errorMsg);
     }
     return index;
   }
