@@ -43,7 +43,11 @@ public class TasksStorage {
                 if (line.trim().isEmpty()) {
                     continue;
                 }
-                tasks.add(Task.fromDataFormat(line));
+                try {
+                    tasks.add(Task.fromDataFormat(line));
+                } catch (IllegalCommandException | IllegalArgumentException exception) {
+                    System.out.println("Skipping corrupted or outdated task line: " + line);
+                }
             }
         } catch (IOException exception) {
             System.out.println("Error loading tasks from file: " + exception.getMessage());
