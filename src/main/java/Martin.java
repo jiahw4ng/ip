@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -54,7 +55,21 @@ public class Martin {
             boolean isRunning = true;
             while (isRunning) {
                 System.out.print("> " + GRAY);
-                String input = scanner.nextLine();
+                if (!scanner.hasNextLine()) {
+                    System.out.print(RESET);
+                    System.out.println();
+                    break;
+                }
+
+                String input;
+                try {
+                    input = scanner.nextLine();
+                } catch (NoSuchElementException | IllegalStateException exception) {
+                    System.out.print(RESET);
+                    System.out.println();
+                    break;
+                }
+
                 System.out.print(RESET);
                 System.out.println(HORIZ_LINE);
 
