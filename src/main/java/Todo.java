@@ -29,4 +29,9 @@ public class Todo extends Task {
     String description = requireValue(details, "A todo needs a non-empty description.");
     return new Todo(description);
   }
+
+  @Override
+  public String toDataFormat() {
+    return String.format("T | %d | %s", this.isDone ? 1 : 0, this.description);
+  }
 }

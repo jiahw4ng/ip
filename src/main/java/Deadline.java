@@ -38,4 +38,9 @@ public class Deadline extends Task {
     return new Deadline(description, by);
   }
 
+  @Override
+  public String toDataFormat() {
+    return String.format("D | %d | %s | %s", this.isDone ? 1 : 0, this.description, this.by);
+  }
+
 }

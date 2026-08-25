@@ -49,4 +49,9 @@ public class Event extends Task {
         "An event needs a non-empty /to date.");
     return new Event(description, from, to);
   }
+
+  @Override
+  public String toDataFormat() {
+    return String.format("E | %d | %s | %s | %s", this.isDone ? 1 : 0, this.description, this.from, this.to);
+  }
 }

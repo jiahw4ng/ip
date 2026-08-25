@@ -104,4 +104,49 @@ public abstract class Task {
       System.out.println((i + 1) + ". " + tasks.get(i));
     }
   }
+
+  /**
+   * Returns the formatted string representation of this task for persistent storage.
+   *
+   * @return the string formatted for file storage
+   */
+  public abstract String toDataFormat();
+
+  /**
+   * Creates a {@code Task} instance by decoding a line from the storage file.
+   *
+   * @param line the line of text from the storage file
+   * @return the reconstructed {@code Task} instance
+   * @throws IllegalArgumentException if the stored line format is invalid or corrupted
+   */
+  public static Task fromDataFormat(String line) {
+    String[] parts = line.split(" \\| ");
+    if (parts.length < 3) {
+      throw new IllegalArgumentException("Invalid task format in storage file: " + line);
+    }
+    String type = parts[0];
+    boolean isDone = parts[1].equals("1");
+    String description = parts[2];
+    Task task;
+    switch (type) {
+    case "T" -> task = new Todo(description);
+    case "D" -> {
+      if (parts.length < 4) {
+        throw new IllegalArgumentException("Invalid deadline format in storage file: " + line);
+      }
+      task = new Deadline(description, parts[3]);
+    }
+    case "E" -> {
+      if (parts.length < 5) {
+        throw new IllegalArgumentException("Invalid event format in storage file: " + line);
+      }
+      task = new Event(description, parts[3], parts[4]);
+    }
+    default -> throw new IllegalArgumentException("Unknown task type in storage file: " + type);
+    }
+    if (isDone) {
+      task.markAsDone();
+    }
+    return task;
+  }
 }

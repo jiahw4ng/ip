@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,13 +22,26 @@ public class Martin {
     public static final String MARTIN_GREETING = "Hello! I'm Martin.\nWhat can I do for you?";
     public static final String MARTIN_GOODBYE = "Bye. Hope to see you again soon!";
 
+    private final TasksStorage storage;
     private final List<Task> tasks;
 
     /**
-     * Constructs a new {@code Martin} chatbot instance with an empty task list.
+     * Constructs a new {@code Martin} chatbot instance with the specified data file
+     * path.
+     *
+     * @param filePath the file path used to load and persist task data
+     */
+    public Martin(String filePath) {
+        this.storage = new TasksStorage(filePath);
+        this.tasks = this.storage.load();
+    }
+
+    /**
+     * Constructs a new {@code Martin} chatbot instance with the default data file
+     * path.
      */
     public Martin() {
-        this.tasks = new ArrayList<>();
+        this("./data/martin.txt");
     }
 
     /**
@@ -129,6 +141,7 @@ public class Martin {
             System.out.println("I can't find that task. Use a number shown by list.");
         } else {
             this.tasks.remove(task);
+            this.storage.save(this.tasks);
             System.out.println("Noted. I've removed this task:");
             System.out.println(task);
             System.out.printf("Now you have %d tasks in the list.%n", this.tasks.size());
@@ -143,6 +156,7 @@ public class Martin {
     private void handleAddTask(String input) {
         Task newTask = Task.of(input);
         this.tasks.add(newTask);
+        this.storage.save(this.tasks);
         System.out.println("Got it. I've added this task:");
         System.out.println(newTask);
         System.out.printf("Now you have %d tasks in the list.%n", this.tasks.size());
@@ -161,12 +175,15 @@ public class Martin {
             System.out.println("I can't find that task. Use a number shown by list.");
         } else if (shouldMarkAsDone) {
             task.markAsDone();
+            this.storage.save(this.tasks);
             System.out.println("Nice! I've marked this task as done:");
+            System.out.println(task);
         } else {
             task.markAsNotDone();
+            this.storage.save(this.tasks);
             System.out.println("OK, I've marked this task as not done yet:");
+            System.out.println(task);
         }
-        System.out.println(task);
     }
 
 }
