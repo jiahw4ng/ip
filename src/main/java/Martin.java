@@ -59,7 +59,7 @@ public class Martin {
                         case TODO, DEADLINE, EVENT -> handleAddTask(input);
                         case BYE -> isRunning = false;
                     }
-                } catch (IllegalCommandException | IllegalArgumentException exception) {
+                } catch (IllegalCommandException exception) {
                     System.out.println(exception.getMessage());
                 }
                 System.out.println(HORIZ_LINE);
