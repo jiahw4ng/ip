@@ -5,6 +5,11 @@ public abstract class Task {
   protected final String description;
   protected boolean isDone = false;
 
+  /**
+   * Constructs a {@code Task} with the specified description.
+   *
+   * @param desc the description of the task
+   */
   public Task(String desc) {
     this.description = desc;
   }
@@ -31,8 +36,12 @@ public abstract class Task {
   }
 
   /**
-   * Returns a trimmed command value, rejecting an empty value with a clear
-   * message.
+   * Returns a trimmed command value, rejecting an empty value with a clear message.
+   *
+   * @param value the string to trim and validate
+   * @param errorMsg the error message to throw if the value is empty
+   * @return the trimmed non-empty string
+   * @throws IllegalArgumentException if the trimmed string is empty
    */
   public static String requireValue(String value, String errorMsg) {
     String trimmedValue = value.trim();
@@ -43,8 +52,13 @@ public abstract class Task {
   }
 
   /**
-   * Returns the index of a substring, rejecting a missing substring with a clear
-   * message.
+   * Returns the index of a substring, rejecting a missing substring with a clear message.
+   *
+   * @param str the string to search within
+   * @param substr the delimiter or substring to search for
+   * @param errorMsg the error message to throw if the substring is not found
+   * @return the index of the substring
+   * @throws IllegalArgumentException if the substring is not found
    */
   public static int requireIndex(String str, String substr, String errorMsg) {
     int index = str.indexOf(substr);
@@ -69,11 +83,20 @@ public abstract class Task {
     isDone = false;
   }
 
+  /**
+   * Returns the status icon representing completion status.
+   *
+   * @return "X" if the task is done, or " " if not done
+   */
   public String getDoneString() {
     return this.isDone ? "X" : " ";
   }
 
-  /** Prints the tasks in the order that the user entered them. */
+  /**
+   * Prints the tasks in the order that the user entered them.
+   *
+   * @param tasks the list of tasks to print
+   */
   public static void printTasks(List<Task> tasks) {
     for (int i = 0; i < tasks.size(); i++) {
       System.out.println((i + 1) + ". " + tasks.get(i));

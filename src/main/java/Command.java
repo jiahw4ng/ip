@@ -1,3 +1,6 @@
+/**
+ * Represents the available commands supported by the application.
+ */
 public enum Command {
   LIST("list"),
   MARK("mark"),
@@ -14,6 +17,13 @@ public enum Command {
     this.keyword = keyword;
   }
 
+  /**
+   * Returns the {@code Command} enum constant corresponding to the keyword in the input.
+   *
+   * @param input the raw input string entered by the user
+   * @return the matching {@code Command}
+   * @throws IllegalArgumentException if the command word is unrecognized
+   */
   public static Command from(String input) {
     String commandWord = input.trim().split("\\s+", 2)[0];
     for (Command type : values()) {

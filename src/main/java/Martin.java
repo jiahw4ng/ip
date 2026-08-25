@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Main class for the Martin task management chatbot application.
+ */
 public class Martin {
     // ANSI escape codes used to colour the echoed user input in supported
     // terminals.
@@ -20,6 +23,11 @@ public class Martin {
     public static final String GREETING = "Hello! I'm Martin.\nWhat can I do for you?";
     public static final String GOODBYE = "Bye. Hope to see you again soon!";
 
+    /**
+     * Entry point of the Martin application.
+     *
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
         start();
 
@@ -54,6 +62,9 @@ public class Martin {
         goodbye();
     }
 
+    /**
+     * Prints the initial greeting message and banner.
+     */
     private static void start() {
         System.out.println(HORIZ_LINE);
         System.out.println(BANNER);
@@ -61,11 +72,19 @@ public class Martin {
         System.out.println(HORIZ_LINE);
     }
 
+    /**
+     * Prints the goodbye message.
+     */
     private static void goodbye() {
         System.out.println(GOODBYE);
         System.out.println(HORIZ_LINE);
     }
 
+    /**
+     * Prints all tasks currently in the task list.
+     *
+     * @param tasks the list of tasks to display
+     */
     private static void printList(List<Task> tasks) {
 
         if (tasks.isEmpty()) {
@@ -80,6 +99,10 @@ public class Martin {
     /**
      * Returns the task selected by a one-based command index, or {@code null} when
      * it is invalid.
+     *
+     * @param tasks the list of tasks to search
+     * @param input the user input containing the task number
+     * @return the selected {@code Task}, or {@code null} if the index is invalid
      */
     private static Task findTask(List<Task> tasks, String input) {
         try {
@@ -93,6 +116,12 @@ public class Martin {
         }
     }
 
+    /**
+     * Deletes the specified task from the list based on user input.
+     *
+     * @param tasks the list of tasks to remove from
+     * @param input the user input containing the task index to delete
+     */
     private static void handleDeleteTask(List<Task> tasks, String input) {
         Task task = findTask(tasks, input);
         if (task == null) {
@@ -105,7 +134,12 @@ public class Martin {
         }
     }
 
-    /** Adds the task described by a valid task-creation command. */
+    /**
+     * Adds the task described by a valid task-creation command.
+     *
+     * @param tasks the list of tasks to add to
+     * @param input the task command input string
+     */
     private static void handleAddTask(List<Task> tasks, String input) {
         Task newTask = Task.of(input);
         tasks.add(newTask);
@@ -114,7 +148,13 @@ public class Martin {
         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
     }
 
-    /** Marks or unmarks the task selected by the command's one-based index. */
+    /**
+     * Marks or unmarks the task selected by the command's one-based index.
+     *
+     * @param tasks the list of tasks
+     * @param input the user input containing the task index
+     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark as not done
+     */
     private static void handleMarkTask(List<Task> tasks, String input, boolean shouldMarkAsDone) {
         Task task = findTask(tasks, input);
         if (task == null) {
@@ -126,12 +166,22 @@ public class Martin {
         }
     }
 
+    /**
+     * Marks the specified task as done and prints a confirmation message.
+     *
+     * @param task the task to mark as done
+     */
     private static void handleMarkTaskAsDone(Task task) {
         task.markAsDone();
         System.out.println("Nice! I've marked this task as done:");
         System.out.println(task);
     }
 
+    /**
+     * Marks the specified task as not done and prints a confirmation message.
+     *
+     * @param task the task to mark as not done
+     */
     private static void handleMarkTaskAsNotDone(Task task) {
         task.markAsNotDone();
         System.out.println("OK, I've marked this task as not done yet:");

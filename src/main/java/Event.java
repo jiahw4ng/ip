@@ -1,10 +1,19 @@
-/** A task occurring between specified start and end dates or times. */
+/**
+ * Represents a task occurring between specified start and end dates or times.
+ */
 public class Event extends Task {
   protected final String from;
   protected final String to;
   public static final String FROM_DELIMITER = "/from";
   public static final String TO_DELIMITER = "/to";
 
+  /**
+   * Constructs an {@code Event} task with a description, start time, and end time.
+   *
+   * @param desc the description of the event
+   * @param from the starting date or time of the event
+   * @param to the ending date or time of the event
+   */
   public Event(String desc, String from, String to) {
     super(desc);
     this.from = from;
@@ -17,8 +26,11 @@ public class Event extends Task {
   }
 
   /**
-   * Creates an event from a command containing {@code /from} and {@code /to}
-   * delimiters.
+   * Creates an event from a command containing {@code /from} and {@code /to} delimiters.
+   *
+   * @param input the command string entered by the user
+   * @return the created {@code Event} task
+   * @throws IllegalArgumentException if the description, start date, or end date is missing or invalid
    */
   public static Event createEvent(String input) {
     String details = input.substring("event".length()).trim();
