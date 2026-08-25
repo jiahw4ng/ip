@@ -134,13 +134,13 @@ public abstract class Task {
       if (parts.length < 4) {
         throw new IllegalArgumentException("Invalid deadline format in storage file: " + line);
       }
-      task = new Deadline(description, parts[3]);
+      task = new Deadline(description, DateTimeUtil.parse(parts[3]));
     }
     case "E" -> {
       if (parts.length < 5) {
         throw new IllegalArgumentException("Invalid event format in storage file: " + line);
       }
-      task = new Event(description, parts[3], parts[4]);
+      task = new Event(description, DateTimeUtil.parse(parts[3]), DateTimeUtil.parse(parts[4]));
     }
     default -> throw new IllegalArgumentException("Unknown task type in storage file: " + type);
     }
