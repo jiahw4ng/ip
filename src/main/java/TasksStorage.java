@@ -59,6 +59,15 @@ public class TasksStorage {
     }
 
     /**
+     * Saves the given task list to the data file.
+     *
+     * @param taskList the {@link TaskList} to save
+     */
+    public void save(TaskList taskList) {
+        this.save(taskList.getAllTasks());
+    }
+
+    /**
      * Saves the given list of tasks to the data file.
      *
      * @param tasks the list of tasks to save
