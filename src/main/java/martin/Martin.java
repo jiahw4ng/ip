@@ -1,3 +1,12 @@
+package martin;
+
+import martin.command.Command;
+import martin.exception.IllegalCommandException;
+import martin.storage.TasksStorage;
+import martin.task.Task;
+import martin.task.TaskList;
+import martin.ui.Ui;
+
 /**
  * Chatbot application that coordinates task management, storage, and user interactions.
  */
@@ -61,12 +70,28 @@ public class Martin {
     }
 
     /**
+     * Returns the task selected by a one-based command index, or {@code null} when
+     * it is invalid.
+     *
+     * @param input the user input containing the task number
+     * @return the selected {@code Task}, or {@code null} if the index is invalid
+     */
+    private Task findTaskFromInput(String input) {
+        try {
+            int taskNumber = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
+            return this.tasks.getByOneBasedIndex(taskNumber);
+        } catch (NumberFormatException exception) {
+            return null;
+        }
+    }
+
+    /**
      * Deletes the specified task from the list based on user input.
      *
      * @param input the user input containing the task index to delete
      */
     private void handleDeleteTask(String input) {
-        Task task = this.tasks.findTaskFromInput(input);
+        Task task = this.findTaskFromInput(input);
         if (task == null) {
             this.ui.showError("I can't find that task. Use a number shown by list.");
         } else {
@@ -96,7 +121,7 @@ public class Martin {
      *                         as not done
      */
     private void handleMarkTask(String input, boolean shouldMarkAsDone) {
-        Task task = this.tasks.findTaskFromInput(input);
+        Task task = this.findTaskFromInput(input);
         if (task == null) {
             this.ui.showError("I can't find that task. Use a number shown by list.");
         } else if (shouldMarkAsDone) {
