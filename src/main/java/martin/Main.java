@@ -1,3 +1,5 @@
+package martin;
+
 /**
  * Entry point for launching the Martin chatbot application.
  */

@@ -1,3 +1,7 @@
+package martin.task;
+
+import martin.exception.IllegalCommandException;
+
 /**
  * Represents a task without a date or time associated with it.
  */

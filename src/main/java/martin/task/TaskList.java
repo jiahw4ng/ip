@@ -1,3 +1,5 @@
+package martin.task;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,22 +78,6 @@ public class TaskList {
             return null;
         }
         return this.tasks.get(oneBasedIndex - 1);
-    }
-
-    /**
-     * Returns the task selected by a one-based command index, or {@code null} when
-     * it is invalid.
-     *
-     * @param input the user input containing the task number
-     * @return the selected {@code Task}, or {@code null} if the index is invalid
-     */
-    public Task findTaskFromInput(String input) {
-        try {
-            int taskNumber = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
-            return this.getByOneBasedIndex(taskNumber);
-        } catch (NumberFormatException exception) {
-            return null;
-        }
     }
 
     /**

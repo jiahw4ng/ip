@@ -1,6 +1,10 @@
+package martin.ui;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import martin.task.Task;
+import martin.task.TaskList;
 
 /**
  * Handles all user interface interactions for the Martin chatbot, including

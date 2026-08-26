@@ -1,21 +1,21 @@
+package martin.util;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+import martin.exception.IllegalCommandException;
 
 /**
- * Utility class for parsing and formatting {@link LocalDateTime} objects in the
- * application.
+ * Utility class for parsing and formatting {@link LocalDateTime} objects in the application.
  */
 public class DateTimeUtil {
     public static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HHmm");
-    public static final DateTimeFormatter DISPLAY_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm",
-            Locale.ENGLISH);
+    public static final DateTimeFormatter DISPLAY_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm", Locale.ENGLISH);
 
     /**
      * Parses the given date-time string into a {@link LocalDateTime} object.
-     * Accepts the strict user input format {@code yyyy/MM/dd HHmm} or standard
-     * ISO-8601 strings.
+     * Accepts the strict user input format {@code yyyy/MM/dd HHmm} or standard ISO-8601 strings.
      *
      * @param input the date-time string to parse
      * @return the corresponding {@code LocalDateTime} object
@@ -46,8 +46,7 @@ public class DateTimeUtil {
     }
 
     /**
-     * Formats the given {@link LocalDateTime} into a string representation for file
-     * storage.
+     * Formats the given {@link LocalDateTime} into a string representation for file storage.
      *
      * @param dateTime the {@code LocalDateTime} object to format
      * @return the string formatted for storage
