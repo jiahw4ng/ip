@@ -94,6 +94,15 @@ public class Ui {
     }
 
     /**
+     * Displays the list of tasks from a {@link TaskList}.
+     *
+     * @param taskList the task list to display
+     */
+    public void showTaskList(TaskList taskList) {
+        this.showTaskList(taskList.getAllTasks());
+    }
+
+    /**
      * Displays the list of tasks.
      *
      * @param tasks the list of tasks to display

@@ -1,11 +1,9 @@
-import java.util.List;
-
 /**
  * Chatbot application that coordinates task management, storage, and user interactions.
  */
 public class Martin {
     private final TasksStorage storage;
-    private final List<Task> tasks;
+    private final TaskList tasks;
     private final Ui ui;
 
     /**
@@ -17,7 +15,7 @@ public class Martin {
     public Martin(String filePath) {
         this.ui = new Ui();
         this.storage = new TasksStorage(filePath);
-        this.tasks = this.storage.load();
+        this.tasks = new TaskList(this.storage.load());
     }
 
     /**
@@ -63,31 +61,12 @@ public class Martin {
     }
 
     /**
-     * Returns the task selected by a one-based command index, or {@code null} when
-     * it is invalid.
-     *
-     * @param input the user input containing the task number
-     * @return the selected {@code Task}, or {@code null} if the index is invalid
-     */
-    private Task findTaskFromInput(String input) {
-        try {
-            int taskNumber = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
-            if (taskNumber < 1 || taskNumber > this.tasks.size()) {
-                return null;
-            }
-            return this.tasks.get(taskNumber - 1);
-        } catch (NumberFormatException exception) {
-            return null;
-        }
-    }
-
-    /**
      * Deletes the specified task from the list based on user input.
      *
      * @param input the user input containing the task index to delete
      */
     private void handleDeleteTask(String input) {
-        Task task = this.findTaskFromInput(input);
+        Task task = this.tasks.findTaskFromInput(input);
         if (task == null) {
             this.ui.showError("I can't find that task. Use a number shown by list.");
         } else {
@@ -117,7 +96,7 @@ public class Martin {
      *                         as not done
      */
     private void handleMarkTask(String input, boolean shouldMarkAsDone) {
-        Task task = this.findTaskFromInput(input);
+        Task task = this.tasks.findTaskFromInput(input);
         if (task == null) {
             this.ui.showError("I can't find that task. Use a number shown by list.");
         } else if (shouldMarkAsDone) {
