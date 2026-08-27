@@ -20,7 +20,7 @@ public class TasksStorage {
     /**
      * Constructs a {@code TasksStorage} object with the specified file path.
      *
-     * @param filePath the relative or absolute path to the data file
+     * @param filePath The relative or absolute path to the data file.
      */
     public TasksStorage(String filePath) {
         this.filePath = Paths.get(filePath);
@@ -31,7 +31,7 @@ public class TasksStorage {
      * exist,
      * it creates them and returns an empty list.
      *
-     * @return the list of loaded tasks
+     * @return The list of loaded tasks.
      */
     public List<Task> load() {
         List<Task> tasks = new ArrayList<>();
@@ -67,7 +67,7 @@ public class TasksStorage {
     /**
      * Saves the given task list to the data file.
      *
-     * @param taskList the {@link TaskList} to save
+     * @param taskList The {@link TaskList} to save.
      */
     public void save(TaskList taskList) {
         this.save(taskList.getAllTasks());
@@ -76,7 +76,7 @@ public class TasksStorage {
     /**
      * Saves the given list of tasks to the data file.
      *
-     * @param tasks the list of tasks to save
+     * @param tasks The list of tasks to save.
      */
     public void save(List<Task> tasks) {
         try {

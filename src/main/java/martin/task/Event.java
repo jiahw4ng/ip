@@ -18,20 +18,25 @@ public class Event extends Task {
      * Constructs an {@code Event} task with a description, start time, and end
      * time.
      *
-     * @param desc the description of the event
-     * @param from the starting date and time of the event
-     * @param to   the ending date and time of the event
-     * @throws IllegalCommandException if {@code to} is before {@code from}
+     * @param description The description of the event.
+     * @param startDateTime The starting date and time of the event.
+     * @param endDateTime The ending date and time of the event.
+     * @throws IllegalCommandException If {@code endDateTime} is before {@code startDateTime}.
      */
-    public Event(String desc, LocalDateTime from, LocalDateTime to) {
-        super(desc);
-        if (to.isBefore(from)) {
+    public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        super(description);
+        if (endDateTime.isBefore(startDateTime)) {
             throw new IllegalCommandException("The event end date (/to) cannot be before the start date (/from).");
         }
-        this.from = from;
-        this.to = to;
+        this.from = startDateTime;
+        this.to = endDateTime;
     }
 
+    /**
+     * Returns this event with its completion status and formatted time range.
+     *
+     * @return The display representation of this event.
+     */
     @Override
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)", super.toString(),
@@ -42,10 +47,9 @@ public class Event extends Task {
      * Creates an event from a command containing {@code /from} and {@code /to}
      * delimiters.
      *
-     * @param input the command string entered by the user
-     * @return the created {@code Event} task
-     * @throws IllegalCommandException if the description, start date, or end date
-     *                                 is missing or invalid
+     * @param input The command string entered by the user.
+     * @return The created {@code Event} task.
+     * @throws IllegalCommandException If the description, start date, or end date is missing or invalid.
      */
     public static Event createEvent(String input) {
         String details = input.substring("event".length()).trim();
@@ -55,15 +59,20 @@ public class Event extends Task {
             throw new IllegalCommandException("An event needs a /from date that comes before the /to date.");
         }
         String description = requireValue(details.substring(0, fromIndex), "An event needs a non-empty description.");
-        String fromString = requireValue(details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
+        String startDateTimeText = requireValue(details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
                 "An event needs a non-empty /from date.");
-        String toString = requireValue(details.substring(toIndex + TO_DELIMITER.length()),
+        String endDateTimeText = requireValue(details.substring(toIndex + TO_DELIMITER.length()),
                 "An event needs a non-empty /to date.");
-        LocalDateTime from = DateTimeUtil.parse(fromString);
-        LocalDateTime to = DateTimeUtil.parse(toString);
-        return new Event(description, from, to);
+        LocalDateTime startDateTime = DateTimeUtil.parse(startDateTimeText);
+        LocalDateTime endDateTime = DateTimeUtil.parse(endDateTimeText);
+        return new Event(description, startDateTime, endDateTime);
     }
 
+    /**
+     * Returns this event in the persistent storage format.
+     *
+     * @return The storage representation of this event.
+     */
     @Override
     public String toDataFormat() {
         return String.format("E | %d | %s | %s | %s", this.isDone ? 1 : 0, this.description,

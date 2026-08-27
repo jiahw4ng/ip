@@ -20,7 +20,7 @@ public class Martin {
      * Constructs a new {@code Martin} chatbot instance with the specified data file
      * path.
      *
-     * @param filePath the file path used to load and persist task data
+     * @param filePath The file path used to load and persist task data.
      */
     public Martin(String filePath) {
         this.ui = new Ui();
@@ -74,8 +74,8 @@ public class Martin {
      * Returns the task selected by a one-based command index, or {@code null} when
      * it is invalid.
      *
-     * @param input the user input containing the task number
-     * @return the selected {@code Task}, or {@code null} if the index is invalid
+     * @param input The user input containing the task number.
+     * @return The selected {@code Task}, or {@code null} if the index is invalid.
      */
     private Task findTaskFromInput(String input) {
         try {
@@ -89,7 +89,7 @@ public class Martin {
     /**
      * Deletes the specified task from the list based on user input.
      *
-     * @param input the user input containing the task index to delete
+     * @param input The user input containing the task index to delete.
      */
     private void handleDeleteTask(String input) {
         Task task = this.findTaskFromInput(input);
@@ -105,7 +105,7 @@ public class Martin {
     /**
      * Adds the task described by a valid task-creation command.
      *
-     * @param input the task command input string
+     * @param input The task command input string.
      */
     private void handleAddTask(String input) {
         Task newTask = Task.of(input);
@@ -117,9 +117,8 @@ public class Martin {
     /**
      * Marks or unmarks the task selected by the command's one-based index.
      *
-     * @param input            the user input containing the task index
-     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark
-     *                         as not done
+     * @param input The user input containing the task index.
+     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark as not done.
      */
     private void handleMarkTask(String input, boolean shouldMarkAsDone) {
         Task task = this.findTaskFromInput(input);

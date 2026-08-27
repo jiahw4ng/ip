@@ -7,7 +7,7 @@ public class Main {
     /**
      * Launches the Martin application.
      *
-     * @param args command-line arguments
+     * @param args Command-line arguments.
      */
     public static void main(String[] args) {
         new Martin().run();

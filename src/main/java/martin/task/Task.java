@@ -13,19 +13,18 @@ public abstract class Task {
     /**
      * Constructs a {@code Task} with the specified description.
      *
-     * @param desc the description of the task
+     * @param description The description of the task.
      */
-    public Task(String desc) {
-        this.description = desc;
+    public Task(String description) {
+        this.description = description;
     }
 
     /**
      * Creates the task specified by a task-creation command.
      *
-     * @param input the complete command entered by the user
-     * @return the corresponding todo, deadline, or event
-     * @throws IllegalCommandException if the command is unknown or is missing a
-     *                                 required value
+     * @param input The complete command entered by the user.
+     * @return The corresponding todo, deadline, or event.
+     * @throws IllegalCommandException If the command is unknown or is missing a required value.
      */
     public static Task of(String input) {
         if (input.startsWith("todo")) {
@@ -41,13 +40,12 @@ public abstract class Task {
     }
 
     /**
-     * Returns a trimmed command value, rejecting an empty value with a clear
-     * message.
+     * Returns a trimmed command value, rejecting an empty value with a clear message.
      *
-     * @param value    the string to trim and validate
-     * @param errorMsg the error message to throw if the value is empty
-     * @return the trimmed non-empty string
-     * @throws IllegalCommandException if the trimmed string is empty
+     * @param value The string to trim and validate.
+     * @param errorMsg The error message to throw if the value is empty.
+     * @return The trimmed non-empty string.
+     * @throws IllegalCommandException If the trimmed string is empty.
      */
     public static String requireValue(String value, String errorMsg) {
         String trimmedValue = value.trim();
@@ -58,14 +56,13 @@ public abstract class Task {
     }
 
     /**
-     * Returns the index of a substring, rejecting a missing substring with a clear
-     * message.
+     * Returns the index of a substring, rejecting a missing substring with a clear message.
      *
-     * @param str      the string to search within
-     * @param substr   the delimiter or substring to search for
-     * @param errorMsg the error message to throw if the substring is not found
-     * @return the index of the substring
-     * @throws IllegalCommandException if the substring is not found
+     * @param str The string to search within.
+     * @param substr The delimiter or substring to search for.
+     * @param errorMsg The error message to throw if the substring is not found.
+     * @return The index of the substring.
+     * @throws IllegalCommandException If the substring is not found.
      */
     public static int requireIndex(String str, String substr, String errorMsg) {
         int index = str.indexOf(substr);
@@ -75,6 +72,11 @@ public abstract class Task {
         return index;
     }
 
+    /**
+     * Returns this task's completion status and description.
+     *
+     * @return The display representation of this task.
+     */
     @Override
     public String toString() {
         return String.format("[%s] %s", this.getDoneString(), this.description);
@@ -93,7 +95,7 @@ public abstract class Task {
     /**
      * Returns the status icon representing completion status.
      *
-     * @return "X" if the task is done, or " " if not done
+     * @return "X" if the task is done, or " " if not done.
      */
     public String getDoneString() {
         return this.isDone ? "X" : " ";
@@ -102,7 +104,7 @@ public abstract class Task {
     /**
      * Prints the tasks in the order that the user entered them.
      *
-     * @param tasks the list of tasks to print
+     * @param tasks The list of tasks to print.
      */
     public static void printTasks(List<Task> tasks) {
         for (int i = 0; i < tasks.size(); i++) {
@@ -114,17 +116,16 @@ public abstract class Task {
      * Returns the formatted string representation of this task for persistent
      * storage.
      *
-     * @return the string formatted for file storage
+     * @return The string formatted for file storage.
      */
     public abstract String toDataFormat();
 
     /**
      * Creates a {@code Task} instance by decoding a line from the storage file.
      *
-     * @param line the line of text from the storage file
-     * @return the reconstructed {@code Task} instance
-     * @throws IllegalArgumentException if the stored line format is invalid or
-     *                                  corrupted
+     * @param line The line of text from the storage file.
+     * @return The reconstructed {@code Task} instance.
+     * @throws IllegalArgumentException If the stored line format is invalid or corrupted.
      */
     public static Task fromDataFormat(String line) {
         String[] parts = line.split(" \\| ");

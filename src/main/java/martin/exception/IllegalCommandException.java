@@ -10,7 +10,7 @@ public class IllegalCommandException extends RuntimeException {
      * Constructs an {@code IllegalCommandException} with the specified detail
      * message.
      *
-     * @param message the detail error message
+     * @param message The detail error message.
      */
     public IllegalCommandException(String message) {
         super(message);

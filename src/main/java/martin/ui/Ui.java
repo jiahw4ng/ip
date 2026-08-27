@@ -65,7 +65,7 @@ public class Ui {
      * Reads a line of command input from the user.
      * Returns {@code null} if the input stream has reached EOF or was interrupted.
      *
-     * @return the raw command string entered by the user, or {@code null} on EOF
+     * @return The raw command string entered by the user, or {@code null} on EOF.
      */
     public String readCommand() {
         System.out.print("> " + GRAY);
@@ -92,7 +92,7 @@ public class Ui {
     /**
      * Displays an error message to the user.
      *
-     * @param message the error message to display
+     * @param message The error message to display.
      */
     public void showError(String message) {
         System.out.println(message);
@@ -101,7 +101,7 @@ public class Ui {
     /**
      * Displays the list of tasks from a {@link TaskList}.
      *
-     * @param taskList the task list to display
+     * @param taskList The task list to display.
      */
     public void showTaskList(TaskList taskList) {
         this.showTaskList(taskList.getAllTasks());
@@ -110,7 +110,7 @@ public class Ui {
     /**
      * Displays the list of tasks.
      *
-     * @param tasks the list of tasks to display
+     * @param tasks The list of tasks to display.
      */
     public void showTaskList(List<Task> tasks) {
         if (tasks.isEmpty()) {
@@ -125,8 +125,8 @@ public class Ui {
     /**
      * Displays confirmation that a task has been added.
      *
-     * @param task       the added task
-     * @param totalTasks the new total number of tasks
+     * @param task The added task.
+     * @param totalTasks The new total number of tasks.
      */
     public void showTaskAdded(Task task, int totalTasks) {
         System.out.println("Got it. I've added this task:");
@@ -137,8 +137,8 @@ public class Ui {
     /**
      * Displays confirmation that a task has been deleted.
      *
-     * @param task       the removed task
-     * @param totalTasks the remaining number of tasks
+     * @param task The removed task.
+     * @param totalTasks The remaining number of tasks.
      */
     public void showTaskDeleted(Task task, int totalTasks) {
         System.out.println("Noted. I've removed this task:");
@@ -149,7 +149,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked as completed.
      *
-     * @param task the marked task
+     * @param task The marked task.
      */
     public void showTaskMarked(Task task) {
         System.out.println("Nice! I've marked this task as done:");
@@ -159,7 +159,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked as not completed.
      *
-     * @param task the unmarked task
+     * @param task The unmarked task.
      */
     public void showTaskUnmarked(Task task) {
         System.out.println("OK, I've marked this task as not done yet:");

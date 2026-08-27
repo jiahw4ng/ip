@@ -21,9 +21,9 @@ public class DateTimeUtil {
      * Accepts the strict user input format {@code yyyy/MM/dd HHmm} or standard
      * ISO-8601 strings.
      *
-     * @param input the date-time string to parse
-     * @return the corresponding {@code LocalDateTime} object
-     * @throws IllegalCommandException if the input string cannot be parsed
+     * @param input The date-time string to parse.
+     * @return The corresponding {@code LocalDateTime} object.
+     * @throws IllegalCommandException If the input string cannot be parsed.
      */
     public static LocalDateTime parse(String input) {
         String trimmed = input.trim();
@@ -42,8 +42,8 @@ public class DateTimeUtil {
     /**
      * Formats the given {@link LocalDateTime} into a user-friendly display string.
      *
-     * @param dateTime the {@code LocalDateTime} object to format
-     * @return the formatted date-time string (e.g. "Aug 26 2026, 18:30")
+     * @param dateTime The {@code LocalDateTime} object to format.
+     * @return The formatted date-time string (e.g. "Aug 26 2026, 18:30").
      */
     public static String formatDisplay(LocalDateTime dateTime) {
         return dateTime.format(DISPLAY_FORMATTER);
@@ -53,8 +53,8 @@ public class DateTimeUtil {
      * Formats the given {@link LocalDateTime} into a string representation for file
      * storage.
      *
-     * @param dateTime the {@code LocalDateTime} object to format
-     * @return the string formatted for storage
+     * @param dateTime The {@code LocalDateTime} object to format.
+     * @return The string formatted for storage.
      */
     public static String formatStorage(LocalDateTime dateTime) {
         return dateTime.format(INPUT_FORMATTER);
