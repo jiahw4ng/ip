@@ -22,7 +22,8 @@ public enum Command {
     }
 
     /**
-     * Returns the {@code Command} enum constant corresponding to the keyword in the input.
+     * Returns the {@code Command} enum constant corresponding to the keyword in the
+     * input.
      *
      * @param input the raw input string entered by the user
      * @return the matching {@code Command}

@@ -8,7 +8,8 @@ import martin.task.TaskList;
 import martin.ui.Ui;
 
 /**
- * Chatbot application that coordinates task management, storage, and user interactions.
+ * Chatbot application that coordinates task management, storage, and user
+ * interactions.
  */
 public class Martin {
     private final TasksStorage storage;

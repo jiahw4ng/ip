@@ -3,6 +3,7 @@ package martin.ui;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
 import martin.task.Task;
 import martin.task.TaskList;
 
@@ -124,7 +125,7 @@ public class Ui {
     /**
      * Displays confirmation that a task has been added.
      *
-     * @param task the added task
+     * @param task       the added task
      * @param totalTasks the new total number of tasks
      */
     public void showTaskAdded(Task task, int totalTasks) {
@@ -136,7 +137,7 @@ public class Ui {
     /**
      * Displays confirmation that a task has been deleted.
      *
-     * @param task the removed task
+     * @param task       the removed task
      * @param totalTasks the remaining number of tasks
      */
     public void showTaskDeleted(Task task, int totalTasks) {

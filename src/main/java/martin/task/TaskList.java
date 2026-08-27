@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents the list of tasks and encapsulates operations to manage and manipulate tasks.
+ * Represents the list of tasks and encapsulates operations to manage and
+ * manipulate tasks.
  */
 public class TaskList {
     private final List<Task> tasks;
@@ -39,7 +40,8 @@ public class TaskList {
      * Removes the specified task from the list.
      *
      * @param task the task to remove
-     * @return {@code true} if the task was found and removed, {@code false} otherwise
+     * @return {@code true} if the task was found and removed, {@code false}
+     *         otherwise
      */
     public boolean remove(Task task) {
         return this.tasks.remove(task);
@@ -68,7 +70,8 @@ public class TaskList {
     }
 
     /**
-     * Returns the task selected by a one-based user index, or {@code null} if the index is invalid.
+     * Returns the task selected by a one-based user index, or {@code null} if the
+     * index is invalid.
      *
      * @param oneBasedIndex the one-based index of the task
      * @return the selected {@code Task}, or {@code null} if invalid
