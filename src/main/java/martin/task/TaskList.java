@@ -3,6 +3,7 @@ package martin.task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Represents the list of tasks and encapsulates operations to manage and
@@ -40,7 +41,8 @@ public class TaskList {
      * Removes the specified task from the list.
      *
      * @param task The task to remove.
-     * @return {@code true} if the task was found and removed, {@code false} otherwise.
+     * @return {@code true} if the task was found and removed, {@code false}
+     *         otherwise.
      */
     public boolean remove(Task task) {
         return this.tasks.remove(task);
@@ -98,6 +100,29 @@ public class TaskList {
      */
     public boolean isEmpty() {
         return this.tasks.isEmpty();
+    }
+
+    /**
+     * Returns tasks whose descriptions contain the specified keyword,
+     * ignoring letter case.
+     *
+     * @param keyword The keyword to search for.
+     * @return The matching tasks in their original list order.
+     * @throws IllegalArgumentException If {@code keyword} is {@code null}.
+     */
+    public List<Task> find(String keyword) {
+        if (keyword == null) {
+            throw new IllegalArgumentException("Search keyword cannot be null.");
+        }
+
+        String normalizedKeyword = keyword.trim().toLowerCase(Locale.ROOT);
+        if (normalizedKeyword.isEmpty()) {
+            return List.of();
+        }
+
+        return this.tasks.stream()
+            .filter(task -> task.description.toLowerCase(Locale.ROOT).contains(normalizedKeyword))
+            .toList();
     }
 
     /**

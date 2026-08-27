@@ -13,6 +13,7 @@ public enum Command {
     TODO("todo"),
     DEADLINE("deadline"),
     EVENT("event"),
+    FIND("find"),
     BYE("bye");
 
     private final String keyword;
