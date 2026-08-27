@@ -60,6 +60,7 @@ public class Martin {
                     case UNMARK -> handleMarkTask(input, false);
                     case DELETE -> handleDeleteTask(input);
                     case TODO, DEADLINE, EVENT -> handleAddTask(input);
+                    case FIND -> handleFindTask(input);
                     case BYE -> isRunning = false;
                 }
             } catch (IllegalCommandException exception) {
@@ -112,6 +113,20 @@ public class Martin {
         this.tasks.add(newTask);
         this.storage.save(this.tasks);
         this.ui.showTaskAdded(newTask, this.tasks.size());
+    }
+
+    /**
+     * Displays tasks whose descriptions contain the requested keyword.
+     *
+     * @param input The user input containing the search keyword.
+     * @throws IllegalCommandException If the search keyword is missing.
+     */
+    private void handleFindTask(String input) {
+        String keyword = input.substring("find".length()).trim();
+        if (keyword.isEmpty()) {
+            throw new IllegalCommandException("A find command needs a non-empty keyword.");
+        }
+        this.ui.showFindResults(this.tasks.find(keyword));
     }
 
     /**
