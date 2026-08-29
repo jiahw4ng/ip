@@ -18,10 +18,11 @@ public class Event extends Task {
      * Constructs an {@code Event} task with a description, start time, and end
      * time.
      *
-     * @param description The description of the event.
+     * @param description   The description of the event.
      * @param startDateTime The starting date and time of the event.
-     * @param endDateTime The ending date and time of the event.
-     * @throws IllegalCommandException If {@code endDateTime} is before {@code startDateTime}.
+     * @param endDateTime   The ending date and time of the event.
+     * @throws IllegalCommandException If {@code endDateTime} is before
+     *                                 {@code startDateTime}.
      */
     public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         super(description);
@@ -49,9 +50,10 @@ public class Event extends Task {
      *
      * @param input The command string entered by the user.
      * @return The created {@code Event} task.
-     * @throws IllegalCommandException If the description, start date, or end date is missing or invalid.
+     * @throws IllegalCommandException If the description, start date, or end date
+     *                                 is missing or invalid.
      */
-    public static Event createEvent(String input) {
+    public static Event eventFromInputString(String input) {
         String details = input.substring("event".length()).trim();
         int fromIndex = requireIndex(details, FROM_DELIMITER, "An event needs a non-empty /from date.");
         int toIndex = requireIndex(details, TO_DELIMITER, "An event needs a non-empty /to date.");

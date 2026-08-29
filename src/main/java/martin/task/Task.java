@@ -24,25 +24,27 @@ public abstract class Task {
      *
      * @param input The complete command entered by the user.
      * @return The corresponding todo, deadline, or event.
-     * @throws IllegalCommandException If the command is unknown or is missing a required value.
+     * @throws IllegalCommandException If the command is unknown or is missing a
+     *                                 required value.
      */
     public static Task of(String input) {
         if (input.startsWith("todo")) {
-            return Todo.createTodo(input);
+            return Todo.todoFromInputString(input);
         }
         if (input.startsWith("deadline")) {
-            return Deadline.createDeadline(input);
+            return Deadline.deadlineFromInputString(input);
         }
         if (input.startsWith("event")) {
-            return Event.createEvent(input);
+            return Event.eventFromInputString(input);
         }
         throw new IllegalCommandException("I'm sorry, I don't know what that means!");
     }
 
     /**
-     * Returns a trimmed command value, rejecting an empty value with a clear message.
+     * Returns a trimmed command value, rejecting an empty value with a clear
+     * message.
      *
-     * @param value The string to trim and validate.
+     * @param value    The string to trim and validate.
      * @param errorMsg The error message to throw if the value is empty.
      * @return The trimmed non-empty string.
      * @throws IllegalCommandException If the trimmed string is empty.
@@ -56,10 +58,11 @@ public abstract class Task {
     }
 
     /**
-     * Returns the index of a substring, rejecting a missing substring with a clear message.
+     * Returns the index of a substring, rejecting a missing substring with a clear
+     * message.
      *
-     * @param str The string to search within.
-     * @param substr The delimiter or substring to search for.
+     * @param str      The string to search within.
+     * @param substr   The delimiter or substring to search for.
      * @param errorMsg The error message to throw if the substring is not found.
      * @return The index of the substring.
      * @throws IllegalCommandException If the substring is not found.
@@ -125,7 +128,8 @@ public abstract class Task {
      *
      * @param line The line of text from the storage file.
      * @return The reconstructed {@code Task} instance.
-     * @throws IllegalArgumentException If the stored line format is invalid or corrupted.
+     * @throws IllegalArgumentException If the stored line format is invalid or
+     *                                  corrupted.
      */
     public static Task fromDataFormat(String line) {
         String[] parts = line.split(" \\| ");

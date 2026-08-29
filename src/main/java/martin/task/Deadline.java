@@ -17,7 +17,7 @@ public class Deadline extends Task {
      * date/time.
      *
      * @param description The description of the task.
-     * @param deadline The date and time by which the task should be completed.
+     * @param deadline    The date and time by which the task should be completed.
      */
     public Deadline(String description, LocalDateTime deadline) {
         super(description);
@@ -39,9 +39,10 @@ public class Deadline extends Task {
      *
      * @param input The command string entered by the user.
      * @return The created {@code Deadline} task.
-     * @throws IllegalCommandException If the description or date is missing or invalid.
+     * @throws IllegalCommandException If the description or date is missing or
+     *                                 invalid.
      */
-    public static Deadline createDeadline(String input) {
+    public static Deadline deadlineFromInputString(String input) {
         String details = input.substring("deadline".length()).trim();
         int byIndex = requireIndex(details, BY_DELIMITER, "A deadline needs a non-empty /by date.");
         String description = requireValue(details.substring(0, byIndex), "A deadline needs a non-empty description.");

@@ -33,7 +33,7 @@ public class Todo extends Task {
      * @return The created {@code Todo} task.
      * @throws IllegalCommandException If the description is missing.
      */
-    public static Todo createTodo(String input) {
+    public static Todo todoFromInputString(String input) {
         String details = input.substring("todo".length()).trim();
         String description = requireValue(details, "A todo needs a non-empty description.");
         return new Todo(description);
