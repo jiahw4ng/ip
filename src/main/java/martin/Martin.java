@@ -15,6 +15,7 @@ public class Martin {
     private final TasksStorage storage;
     private final TaskList tasks;
     private final Ui ui;
+    private boolean isRunning = true;
 
     /**
      * Constructs a new {@code Martin} chatbot instance with the specified data file
@@ -42,33 +43,39 @@ public class Martin {
     public void run() {
         this.ui.showWelcome();
 
-        boolean isRunning = true;
-        while (isRunning) {
+        while (this.isRunning) {
             String input = this.ui.readCommand();
-            if (input == null) {
-                break;
-            }
-
-            try {
-                if (input.trim().isEmpty()) {
-                    throw new IllegalCommandException("I'm sorry, I don't know what that means.");
-                }
-                Command command = Command.from(input);
-                switch (command) {
-                    case LIST -> this.ui.showTaskList(this.tasks);
-                    case MARK -> handleMarkTask(input, true);
-                    case UNMARK -> handleMarkTask(input, false);
-                    case DELETE -> handleDeleteTask(input);
-                    case TODO, DEADLINE, EVENT -> handleAddTask(input);
-                    case FIND -> handleFindTask(input);
-                    case BYE -> isRunning = false;
-                }
-            } catch (IllegalCommandException exception) {
-                this.ui.showError(exception.getMessage());
-            }
-            this.ui.showLine();
+            this.processInput(input);
         }
         this.ui.showGoodbye();
+    }
+
+    /**
+     * Processes the user input command and executes the corresponding action.
+     *
+     * @param input The user input command string.
+     */
+    private void processInput(String input) {
+        try {
+            if (input == null || input.trim().isEmpty()) {
+                throw new IllegalCommandException("Please enter a command.");
+            }
+            Command command = Command.from(input);
+            switch (command) {
+                case LIST -> this.ui.showTaskList(this.tasks);
+                case MARK -> handleMarkTask(input, true);
+                case UNMARK -> handleMarkTask(input, false);
+                case DELETE -> handleDeleteTask(input);
+                case TODO, DEADLINE, EVENT -> handleAddTask(input);
+                case FIND -> handleFindTask(input);
+                case BYE -> {
+                    this.isRunning = false;
+                }
+            }
+        } catch (IllegalCommandException exception) {
+            this.ui.showError(exception.getMessage());
+        }
+        this.ui.showLine();
     }
 
     /**
