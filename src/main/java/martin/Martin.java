@@ -2,6 +2,7 @@ package martin;
 
 import martin.command.Command;
 import martin.exception.IllegalCommandException;
+import martin.exception.MartinException;
 import martin.storage.TasksStorage;
 import martin.task.Task;
 import martin.task.TaskList;
@@ -72,7 +73,7 @@ public class Martin {
                     this.isRunning = false;
                 }
             }
-        } catch (IllegalCommandException exception) {
+        } catch (MartinException exception) {
             this.ui.showError(exception.getMessage());
         }
         this.ui.showLine();

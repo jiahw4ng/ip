@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import martin.exception.IllegalCommandException;
+import martin.exception.StorageException;
 import martin.task.Task;
 import martin.task.TaskList;
 
@@ -56,7 +57,7 @@ public class TasksStorage {
                 }
             }
         } catch (IOException exception) {
-            System.out.println("Error loading tasks from file: " + exception.getMessage());
+            throw new StorageException("Unable to load tasks from " + this.filePath + ".", exception);
         }
         if (!tasks.isEmpty()) {
             System.out.println("Loaded " + tasks.size() + " task(s) from the data file!");
@@ -90,7 +91,7 @@ public class TasksStorage {
             }
             Files.write(this.filePath, lines);
         } catch (IOException exception) {
-            System.out.println("Error saving tasks to file: " + exception.getMessage());
+            throw new StorageException("Unable to save tasks to " + this.filePath + ".", exception);
         }
     }
 }
