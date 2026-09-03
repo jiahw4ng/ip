@@ -9,8 +9,8 @@ import martin.util.DateTimeUtil;
  * Represents a task that must be completed by a specified date or time.
  */
 public class Deadline extends Task {
-    protected final LocalDateTime by;
     public static final String BY_DELIMITER = "/by";
+    protected final LocalDateTime by;
 
     /**
      * Constructs a {@code Deadline} task with a description and a deadline

@@ -72,6 +72,7 @@ public class Martin {
                 case BYE -> {
                     this.isRunning = false;
                 }
+                default -> throw new IllegalStateException("Unhandled command: " + command);
             }
         } catch (MartinException exception) {
             this.ui.showError(exception.getMessage());
