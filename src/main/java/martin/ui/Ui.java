@@ -99,12 +99,107 @@ public class Ui {
     }
 
     /**
+     * Returns the formatted initial greeting for a graphical user interface.
+     *
+     * @return The formatted Martin greeting.
+     */
+    public String formatWelcome() {
+        return String.join(System.lineSeparator(), HORIZ_LINE, MARTIN_BANNER.stripTrailing(),
+                MARTIN_GREETING, HORIZ_LINE);
+    }
+
+    /**
+     * Returns the formatted goodbye message.
+     *
+     * @return The formatted Martin goodbye message.
+     */
+    public String formatGoodbye() {
+        return MARTIN_GOODBYE;
+    }
+
+    /**
+     * Returns a formatted list of tasks.
+     *
+     * @param tasks The list of tasks to format.
+     * @return The formatted task list.
+     */
+    public String formatTaskList(List<Task> tasks) {
+        if (tasks.isEmpty()) {
+            return "You have no tasks in your list!";
+        }
+
+        StringBuilder output = new StringBuilder("Here are the tasks in your list:");
+        this.appendTasks(output, tasks);
+        return output.toString();
+    }
+
+    /**
+     * Returns formatted tasks matching a search keyword.
+     *
+     * @param tasks The matching tasks to format.
+     * @return The formatted search results.
+     */
+    public String formatFindResults(List<Task> tasks) {
+        if (tasks.isEmpty()) {
+            return "No matching tasks found.";
+        }
+
+        StringBuilder output = new StringBuilder("Here are the matching tasks in your list:");
+        this.appendTasks(output, tasks);
+        return output.toString();
+    }
+
+    /**
+     * Returns a formatted task-added confirmation.
+     *
+     * @param task The added task.
+     * @param totalTasks The new total number of tasks.
+     * @return The formatted confirmation message.
+     */
+    public String formatTaskAdded(Task task, int totalTasks) {
+        return String.format("Got it. I've added this task:%n%s%nNow you have %d tasks in the list.",
+                task, totalTasks);
+    }
+
+    /**
+     * Returns a formatted task-deleted confirmation.
+     *
+     * @param task The removed task.
+     * @param totalTasks The remaining number of tasks.
+     * @return The formatted confirmation message.
+     */
+    public String formatTaskDeleted(Task task, int totalTasks) {
+        return String.format("Noted. I've removed this task:%n%s%nNow you have %d tasks in the list.",
+                task, totalTasks);
+    }
+
+    /**
+     * Returns a formatted confirmation that a task was marked as completed.
+     *
+     * @param task The marked task.
+     * @return The formatted confirmation message.
+     */
+    public String formatTaskMarked(Task task) {
+        return String.format("Nice! I've marked this task as done:%n%s", task);
+    }
+
+    /**
+     * Returns a formatted confirmation that a task was marked as incomplete.
+     *
+     * @param task The unmarked task.
+     * @return The formatted confirmation message.
+     */
+    public String formatTaskUnmarked(Task task) {
+        return String.format("OK, I've marked this task as not done yet:%n%s", task);
+    }
+
+    /**
      * Displays the list of tasks from a {@link TaskList}.
      *
      * @param taskList The task list to display.
      */
     public void showTaskList(TaskList taskList) {
-        this.showTaskList(taskList.getAllTasks());
+        System.out.println(this.formatTaskList(taskList.getAllTasks()));
     }
 
     /**
@@ -113,13 +208,7 @@ public class Ui {
      * @param tasks The list of tasks to display.
      */
     public void showTaskList(List<Task> tasks) {
-        if (tasks.isEmpty()) {
-            System.out.println("You have no tasks in your list!");
-            return;
-        }
-
-        System.out.println("Here are the tasks in your list:");
-        Task.printTasks(tasks);
+        System.out.println(this.formatTaskList(tasks));
     }
 
     /**
@@ -128,13 +217,7 @@ public class Ui {
      * @param tasks The matching tasks to display.
      */
     public void showFindResults(List<Task> tasks) {
-        if (tasks.isEmpty()) {
-            System.out.println("No matching tasks found.");
-            return;
-        }
-
-        System.out.println("Here are the matching tasks in your list:");
-        Task.printTasks(tasks);
+        System.out.println(this.formatFindResults(tasks));
     }
 
     /**
@@ -144,9 +227,7 @@ public class Ui {
      * @param totalTasks The new total number of tasks.
      */
     public void showTaskAdded(Task task, int totalTasks) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task);
-        System.out.printf("Now you have %d tasks in the list.%n", totalTasks);
+        System.out.println(this.formatTaskAdded(task, totalTasks));
     }
 
     /**
@@ -156,9 +237,7 @@ public class Ui {
      * @param totalTasks The remaining number of tasks.
      */
     public void showTaskDeleted(Task task, int totalTasks) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
-        System.out.printf("Now you have %d tasks in the list.%n", totalTasks);
+        System.out.println(this.formatTaskDeleted(task, totalTasks));
     }
 
     /**
@@ -167,8 +246,7 @@ public class Ui {
      * @param task The marked task.
      */
     public void showTaskMarked(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
+        System.out.println(this.formatTaskMarked(task));
     }
 
     /**
@@ -177,7 +255,21 @@ public class Ui {
      * @param task The unmarked task.
      */
     public void showTaskUnmarked(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
+        System.out.println(this.formatTaskUnmarked(task));
+    }
+
+    /**
+     * Appends numbered task entries to an existing output message.
+     *
+     * @param output The output being assembled.
+     * @param tasks The tasks to append.
+     */
+    private void appendTasks(StringBuilder output, List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            output.append(System.lineSeparator())
+                    .append(i + 1)
+                    .append(". ")
+                    .append(tasks.get(i));
+        }
     }
 }

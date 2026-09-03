@@ -1,6 +1,7 @@
 package martin;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -68,5 +69,20 @@ public class MartinTest {
 
         assertTrue(capturedOutput.toString(StandardCharsets.UTF_8)
                 .contains("A find command needs a non-empty keyword."));
+    }
+
+    @Test
+    public void executeCommand_invalidCommand_returnsError(@TempDir Path tempDir) {
+        Martin martin = new Martin(tempDir.resolve("martin.txt").toString());
+
+        assertEquals("I'm sorry, I don't know what that means.", martin.executeCommand("unknown"));
+    }
+
+    @Test
+    public void executeCommand_bye_stopsMartinAndReturnsGoodbye(@TempDir Path tempDir) {
+        Martin martin = new Martin(tempDir.resolve("martin.txt").toString());
+
+        assertEquals("Bye. Hope to see you again soon!", martin.executeCommand("bye"));
+        assertFalse(martin.isRunning());
     }
 }
