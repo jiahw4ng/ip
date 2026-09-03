@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import martin.core.Martin;
+
 public class MartinTest {
     @Test
     public void dummyTest() {

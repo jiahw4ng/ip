@@ -1,4 +1,4 @@
-package martin;
+package martin.core;
 
 import martin.command.Command;
 import martin.exception.IllegalCommandException;

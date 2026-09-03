@@ -64,7 +64,7 @@ tasks.register('runMartin', JavaExec) {
     group = 'application'
     description = 'Runs the original Martin console chatbot.'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'martin.Main'
+    mainClass = 'martin.cli.Main'
     standardInput = System.in
 }
 

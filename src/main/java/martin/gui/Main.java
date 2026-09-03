@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import martin.Martin;
+import martin.core.Martin;
 import martin.exception.MartinException;
 import martin.ui.Ui;
 
@@ -130,19 +130,19 @@ public class Main extends Application {
     private void appendMessage(String message, Pos alignment, Color color) {
         Label messageLabel = new Label(message);
         messageLabel.setWrapText(true);
-        messageLabel.setMaxWidth(MAX_MESSAGE_WIDTH);
+        double messageContentWidth = MAX_MESSAGE_WIDTH - MESSAGE_HORIZONTAL_PADDING;
+        messageLabel.setPrefWidth(messageContentWidth);
+        messageLabel.setMaxWidth(messageContentWidth);
 
-        Rectangle messageRectangle = new Rectangle();
+        Rectangle messageRectangle = new Rectangle(MAX_MESSAGE_WIDTH, MESSAGE_VERTICAL_PADDING);
         messageRectangle.setArcWidth(12);
         messageRectangle.setArcHeight(12);
         messageRectangle.setFill(color);
-        messageRectangle.widthProperty().bind(messageLabel.widthProperty().add(MESSAGE_HORIZONTAL_PADDING));
         messageRectangle.heightProperty().bind(messageLabel.heightProperty().add(MESSAGE_VERTICAL_PADDING));
 
         StackPane messageBubble = new StackPane(messageRectangle, messageLabel);
         HBox messageRow = new HBox(messageBubble);
         messageRow.setAlignment(alignment);
         this.messages.getChildren().add(messageRow);
-        this.transcript.setVvalue(1.0);
     }
 }
