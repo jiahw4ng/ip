@@ -2,6 +2,7 @@ package martin.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
 import martin.exception.IllegalCommandException;
@@ -20,13 +21,13 @@ public class DeadlineTest {
 
     @Test
     public void createDeadline_missingByDelimiter_throwsIllegalCommandException() {
-        assertThrows(IllegalCommandException.class,
-                () -> Deadline.deadlineFromInputString("deadline return book 2026/08/26 1830"));
+        assertThrows(IllegalCommandException.class, () ->
+                Deadline.deadlineFromInputString("deadline return book 2026/08/26 1830"));
     }
 
     @Test
     public void createDeadline_emptyDescription_throwsIllegalCommandException() {
-        assertThrows(IllegalCommandException.class,
-                () -> Deadline.deadlineFromInputString("deadline /by 2026/08/26 1830"));
+        assertThrows(IllegalCommandException.class, () ->
+                Deadline.deadlineFromInputString("deadline /by 2026/08/26 1830"));
     }
 }

@@ -12,9 +12,6 @@ import martin.task.TaskList;
  * reading inputs, formatting outputs, and printing messages.
  */
 public class Ui {
-    private static final String GRAY = "\u001B[90m";
-    private static final String RESET = "\u001B[0m";
-
     public static final String MARTIN_BANNER = """
             M   M   A   RRR  TTTTT I N   N
             MM MM  A A  R  R   T   I NN  N
@@ -26,6 +23,9 @@ public class Ui {
     public static final String HORIZ_LINE = "_____________________________________________________";
     public static final String MARTIN_GREETING = "Hello! I'm Martin.\nWhat can I do for you?";
     public static final String MARTIN_GOODBYE = "Bye. Hope to see you again soon!";
+
+    private static final String GRAY = "\u001B[90m";
+    private static final String RESET = "\u001B[0m";
 
     private final Scanner scanner;
 

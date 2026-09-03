@@ -9,10 +9,10 @@ import martin.util.DateTimeUtil;
  * Represents a task occurring between specified start and end dates or times.
  */
 public class Event extends Task {
-    protected final LocalDateTime from;
-    protected final LocalDateTime to;
     public static final String FROM_DELIMITER = "/from";
     public static final String TO_DELIMITER = "/to";
+    protected final LocalDateTime from;
+    protected final LocalDateTime to;
 
     /**
      * Constructs an {@code Event} task with a description, start time, and end

@@ -20,10 +20,9 @@ public class MartinExceptionTest {
     public void storageException_preservesCause() {
         Throwable cause = new RuntimeException("disk failure");
 
-        StorageException exception = assertThrows(StorageException.class,
-                () -> {
-                    throw new StorageException("Unable to access storage.", cause);
-                });
+        StorageException exception = assertThrows(StorageException.class, () -> {
+            throw new StorageException("Unable to access storage.", cause);
+        });
 
         assertSame(cause, exception.getCause());
         assertInstanceOf(MartinException.class, exception);
