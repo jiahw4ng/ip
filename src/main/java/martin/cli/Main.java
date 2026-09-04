@@ -1,5 +1,6 @@
-package martin;
+package martin.cli;
 
+import martin.core.Martin;
 import martin.exception.MartinException;
 
 /**
