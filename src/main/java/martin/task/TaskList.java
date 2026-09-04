@@ -29,6 +29,16 @@ public class TaskList {
     }
 
     /**
+     * Constructs a {@code TaskList} initialized with the specified tasks.
+     *
+     * @param tasks The initial tasks to populate the list with.
+     */
+    public TaskList(Task... tasks) {
+        this.tasks = new ArrayList<>();
+        Collections.addAll(this.tasks, tasks);
+    }
+
+    /**
      * Adds a task to the list.
      *
      * @param task The task to add.
