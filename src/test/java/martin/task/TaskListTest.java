@@ -13,6 +13,17 @@ import org.junit.jupiter.api.Test;
 public class TaskListTest {
 
     @Test
+    public void constructor_varargs_initializesTasksCorrectly() {
+        Todo firstTask = new Todo("Read a book");
+        Todo secondTask = new Todo("Book a flight");
+        TaskList taskList = new TaskList(firstTask, secondTask);
+
+        assertEquals(2, taskList.size());
+        assertEquals(firstTask, taskList.get(0));
+        assertEquals(secondTask, taskList.get(1));
+    }
+
+    @Test
     public void find_keywordMatchesIgnoringCase_returnsTasksInOriginalOrder() {
         Todo firstTask = new Todo("Read a book");
         Todo secondTask = new Todo("Book a flight");
