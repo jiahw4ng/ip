@@ -132,33 +132,52 @@ public abstract class Task {
      *                                  corrupted.
      */
     public static Task fromDataFormat(String line) {
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split(" \\| ", -1);
+
+        // Validate minimum parts for all task types
         if (parts.length < 3) {
             throw new IllegalArgumentException("Invalid task format in storage file: " + line);
         }
+
         String type = parts[0];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
-        Task task;
-        switch (type) {
-            case "T" -> task = new Todo(description);
-            case "D" -> {
-                if (parts.length < 4) {
-                    throw new IllegalArgumentException("Invalid deadline format in storage file: " + line);
-                }
-                task = new Deadline(description, DateTimeUtil.parse(parts[3]));
-            }
-            case "E" -> {
-                if (parts.length < 5) {
-                    throw new IllegalArgumentException("Invalid event format in storage file: " + line);
-                }
-                task = new Event(description, DateTimeUtil.parse(parts[3]), DateTimeUtil.parse(parts[4]));
-            }
-            default -> throw new IllegalArgumentException("Unknown task type in storage file: " + type);
-        }
+
+        Task task = createTaskFromType(type, description, parts);
+
         if (isDone) {
             task.markAsDone();
         }
+
         return task;
+    }
+
+    /**
+     * Creates a task instance based on the task type.
+     *
+     * @param type        The task type (T, D, or E).
+     * @param description The task description.
+     * @param parts       The parsed parts from the storage line.
+     * @return The created task instance.
+     * @throws IllegalArgumentException If the task type is unknown or format is
+     *                                  invalid.
+     */
+    private static Task createTaskFromType(String type, String description, String[] parts) {
+        return switch (type) {
+            case "T" -> new Todo(description);
+            case "D" -> {
+                if (parts.length < 4) {
+                    throw new IllegalArgumentException("Invalid deadline format in storage file.");
+                }
+                yield new Deadline(description, DateTimeUtil.parse(parts[3]));
+            }
+            case "E" -> {
+                if (parts.length < 5) {
+                    throw new IllegalArgumentException("Invalid event format in storage file.");
+                }
+                yield new Event(description, DateTimeUtil.parse(parts[3]), DateTimeUtil.parse(parts[4]));
+            }
+            default -> throw new IllegalArgumentException("Unknown task type in storage file: " + type);
+        };
     }
 }
