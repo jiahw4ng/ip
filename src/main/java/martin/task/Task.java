@@ -15,7 +15,7 @@ public abstract class Task {
      *
      * @param description The description of the task.
      */
-    public Task(String description) {
+    protected Task(String description) {
         this.description = description;
     }
 
@@ -29,13 +29,13 @@ public abstract class Task {
      */
     public static Task of(String input) {
         if (input.startsWith("todo")) {
-            return Todo.todoFromInputString(input);
+            return Todo.parseTodoFromInputString(input);
         }
         if (input.startsWith("deadline")) {
-            return Deadline.deadlineFromInputString(input);
+            return Deadline.parseDeadlineFromInputString(input);
         }
         if (input.startsWith("event")) {
-            return Event.eventFromInputString(input);
+            return Event.parseEventFromInputString(input);
         }
         throw new IllegalCommandException("I'm sorry, I don't know what that means!");
     }

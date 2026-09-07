@@ -9,7 +9,15 @@ import martin.util.DateTimeUtil;
  * Represents a task occurring between specified start and end dates or times.
  */
 public class Event extends Task {
+    /**
+     * The delimiter used to separate the description from the start time in the
+     * command input.
+     */
     public static final String FROM_DELIMITER = "/from";
+    /**
+     * The delimiter used to separate the start time from the end time in the
+     * command input.
+     */
     public static final String TO_DELIMITER = "/to";
     protected final LocalDateTime from;
     protected final LocalDateTime to;
@@ -53,7 +61,7 @@ public class Event extends Task {
      * @throws IllegalCommandException If the description, start date, or end date
      *                                 is missing or invalid.
      */
-    public static Event eventFromInputString(String input) {
+    public static Event parseEventFromInputString(String input) {
         String details = input.substring("event".length()).trim();
         int fromIndex = requireIndex(details, FROM_DELIMITER, "An event needs a non-empty /from date.");
         int toIndex = requireIndex(details, TO_DELIMITER, "An event needs a non-empty /to date.");

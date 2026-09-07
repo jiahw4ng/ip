@@ -9,6 +9,10 @@ import martin.util.DateTimeUtil;
  * Represents a task that must be completed by a specified date or time.
  */
 public class Deadline extends Task {
+    /**
+     * The delimiter used to separate the description from the deadline in the
+     * command input.
+     */
     public static final String BY_DELIMITER = "/by";
     protected final LocalDateTime by;
 
@@ -42,7 +46,7 @@ public class Deadline extends Task {
      * @throws IllegalCommandException If the description or date is missing or
      *                                 invalid.
      */
-    public static Deadline deadlineFromInputString(String input) {
+    public static Deadline parseDeadlineFromInputString(String input) {
         String details = input.substring("deadline".length()).trim();
         int byIndex = requireIndex(details, BY_DELIMITER, "A deadline needs a non-empty /by date.");
         String description = requireValue(details.substring(0, byIndex), "A deadline needs a non-empty description.");

@@ -10,8 +10,8 @@ public class Main {
     /**
      * Launches the Martin application.
      *
-    * @param args Command-line arguments.
-    */
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         try {
             new Martin().run();
