@@ -81,4 +81,5 @@ shadowJar {
 
 run {
     standardInput = System.in
+    jvmArgs '-ea'
 }

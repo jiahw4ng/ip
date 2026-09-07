@@ -90,6 +90,9 @@ public class TasksStorage {
                 lines.add(task.toDataFormat());
             }
             Files.write(this.filePath, lines);
+            assert Files.exists(this.filePath)
+                    && lines.size() == tasks.size()
+                    : "Saved file is missing or the number of lines does not match the task count.";
         } catch (IOException exception) {
             throw new StorageException("Unable to save tasks to " + this.filePath + ".", exception);
         }
