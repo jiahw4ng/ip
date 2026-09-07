@@ -44,6 +44,7 @@ public class TaskList {
      * @param task The task to add.
      */
     public void add(Task task) {
+        assert task != null : "Task to add must not be null.";
         this.tasks.add(task);
     }
 
@@ -55,7 +56,9 @@ public class TaskList {
      *         otherwise.
      */
     public boolean remove(Task task) {
-        return this.tasks.remove(task);
+        boolean removed = this.tasks.remove(task);
+        assert !this.tasks.contains(task) : "Task is still present after remove(task).";
+        return removed;
     }
 
     /**
