@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import martin.exception.IllegalCommandException;
 import martin.exception.StorageException;
@@ -30,7 +31,7 @@ public class TasksStorage {
     /**
      * Loads tasks from the data file. If the file or parent directory does not
      * exist,
-     * it creates them and returns an empty list.
+     * it creates them and returns an empty list. Uses streams.
      *
      * @return The list of loaded tasks.
      */
@@ -46,16 +47,19 @@ public class TasksStorage {
             }
 
             List<String> lines = Files.readAllLines(this.filePath);
-            for (String line : lines) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-                try {
-                    tasks.add(Task.fromDataFormat(line));
-                } catch (IllegalCommandException | IllegalArgumentException exception) {
-                    System.out.println("Skipping corrupted or outdated task line: " + line);
-                }
-            }
+            tasks = lines.stream()
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .map(line -> {
+                    try {
+                        return Task.fromDataFormat(line);
+                    } catch (IllegalCommandException | IllegalArgumentException exception) {
+                        System.out.println("Skipping corrupted or outdated task line: " + line);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
         } catch (IOException exception) {
             throw new StorageException("Unable to load tasks from " + this.filePath + ".", exception);
         }
@@ -77,7 +81,7 @@ public class TasksStorage {
     /**
      * Saves the given list of tasks to the data file.
      *
-     * @param tasks The list of tasks to save.
+     * @param tasks The list of tasks to save. Uses streams.
      */
     public void save(List<Task> tasks) {
         try {
@@ -85,10 +89,9 @@ public class TasksStorage {
                 Files.createDirectories(this.filePath.getParent());
             }
 
-            List<String> lines = new ArrayList<>();
-            for (Task task : tasks) {
-                lines.add(task.toDataFormat());
-            }
+            List<String> lines = tasks.stream()
+                .map(Task::toDataFormat)
+                .toList();
             Files.write(this.filePath, lines);
         } catch (IOException exception) {
             throw new StorageException("Unable to save tasks to " + this.filePath + ".", exception);
