@@ -123,9 +123,9 @@ public class Main extends Application {
     /**
      * Adds a text message inside a rectangular chat bubble.
      *
-     * @param message The message to display.
+     * @param message   The message to display.
      * @param alignment The side of the chat area on which to place the message.
-     * @param color The fill color of the message rectangle.
+     * @param color     The fill color of the message rectangle.
      */
     private void appendMessage(String message, Pos alignment, Color color) {
         Label messageLabel = new Label(message);

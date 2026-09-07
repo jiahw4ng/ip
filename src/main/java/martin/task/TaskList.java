@@ -134,8 +134,8 @@ public class TaskList {
         }
 
         return this.tasks.stream()
-            .filter(task -> task.description.toLowerCase(Locale.ROOT).contains(normalizedKeyword))
-            .toList();
+                .filter(task -> task.description.toLowerCase(Locale.ROOT).contains(normalizedKeyword))
+                .toList();
     }
 
     /**

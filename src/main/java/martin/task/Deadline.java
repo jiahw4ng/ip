@@ -19,12 +19,25 @@ public class Deadline extends Task {
     /**
      * Constructs a {@code Deadline} task with a description and a deadline
      * date/time.
+     * Priority defaults to {@code LOW}.
      *
      * @param description The description of the task.
      * @param deadline    The date and time by which the task should be completed.
      */
     public Deadline(String description, LocalDateTime deadline) {
-        super(description, TaskType.DEADLINE);
+        this(description, deadline, Priority.LOW);
+    }
+
+    /**
+     * Constructs a {@code Deadline} task with a description, deadline, and
+     * priority.
+     *
+     * @param description The description of the task.
+     * @param deadline    The date and time by which the task should be completed.
+     * @param priority    The priority of the task.
+     */
+    public Deadline(String description, LocalDateTime deadline, Priority priority) {
+        super(description, TaskType.DEADLINE, priority);
         this.by = deadline;
     }
 
@@ -48,13 +61,14 @@ public class Deadline extends Task {
      *                                 invalid.
      */
     public static Deadline parseDeadlineFromInputString(String input) {
-        String details = input.substring("deadline".length()).trim();
+        BaseTaskDetails taskDetails = parsePriority(input.substring("deadline".length()).trim());
+        String details = taskDetails.details();
         int byIndex = requireIndex(details, BY_DELIMITER, "A deadline needs a non-empty /by date.");
         String description = requireValue(details.substring(0, byIndex), "A deadline needs a non-empty description.");
         String deadlineText = requireValue(details.substring(byIndex + BY_DELIMITER.length()),
                 "A deadline needs a non-empty /by date.");
         LocalDateTime deadline = DateTimeUtil.parse(deadlineText);
-        return new Deadline(description, deadline);
+        return new Deadline(description, deadline, taskDetails.priority());
     }
 
     /**
@@ -64,9 +78,8 @@ public class Deadline extends Task {
      */
     @Override
     public String toDataFormat() {
-        return String.format("%s | %d | %s | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
-                this.description,
-                DateTimeUtil.formatStorage(this.by));
+        return String.format("%s | %d | %s | %s | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
+                this.description, DateTimeUtil.formatStorage(this.by), this.getPriority().getStorageCode());
     }
 
 }

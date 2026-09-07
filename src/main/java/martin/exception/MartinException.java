@@ -15,10 +15,11 @@ public class MartinException extends RuntimeException {
     }
 
     /**
-     * Constructs a {@code MartinException} with a detail message and underlying cause.
+     * Constructs a {@code MartinException} with a detail message and underlying
+     * cause.
      *
      * @param message The detail error message.
-     * @param cause The underlying cause of this exception.
+     * @param cause   The underlying cause of this exception.
      */
     public MartinException(String message, Throwable cause) {
         super(message, cause);

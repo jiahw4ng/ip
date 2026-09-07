@@ -9,11 +9,22 @@ public class Todo extends Task {
 
     /**
      * Constructs a {@code Todo} task with the specified description.
+     * Priority defaults to {@code LOW}.
      *
      * @param description The description of the task.
      */
     public Todo(String description) {
-        super(description, TaskType.TODO);
+        this(description, Priority.LOW);
+    }
+
+    /**
+     * Constructs a {@code Todo} task with the specified description and priority.
+     *
+     * @param description The description of the task.
+     * @param priority    The priority of the task.
+     */
+    public Todo(String description, Priority priority) {
+        super(description, TaskType.TODO, priority);
     }
 
     /**
@@ -34,9 +45,9 @@ public class Todo extends Task {
      * @throws IllegalCommandException If the description is missing.
      */
     public static Todo parseTodoFromInputString(String input) {
-        String details = input.substring("todo".length()).trim();
-        String description = requireValue(details, "A todo needs a non-empty description.");
-        return new Todo(description);
+        BaseTaskDetails taskDetails = parsePriority(input.substring("todo".length()).trim());
+        String description = requireValue(taskDetails.details(), "A todo needs a non-empty description.");
+        return new Todo(description, taskDetails.priority());
     }
 
     /**
@@ -46,7 +57,7 @@ public class Todo extends Task {
      */
     @Override
     public String toDataFormat() {
-        return String.format("%s | %d | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
-                this.description);
+        return String.format("%s | %d | %s | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
+                this.description, this.getPriority().getStorageCode());
     }
 }

@@ -152,7 +152,7 @@ public class Ui {
     /**
      * Returns a formatted task-added confirmation.
      *
-     * @param task The added task.
+     * @param task       The added task.
      * @param totalTasks The new total number of tasks.
      * @return The formatted confirmation message.
      */
@@ -164,7 +164,7 @@ public class Ui {
     /**
      * Returns a formatted task-deleted confirmation.
      *
-     * @param task The removed task.
+     * @param task       The removed task.
      * @param totalTasks The remaining number of tasks.
      * @return The formatted confirmation message.
      */
@@ -223,7 +223,7 @@ public class Ui {
     /**
      * Displays confirmation that a task has been added.
      *
-     * @param task The added task.
+     * @param task       The added task.
      * @param totalTasks The new total number of tasks.
      */
     public void showTaskAdded(Task task, int totalTasks) {
@@ -233,7 +233,7 @@ public class Ui {
     /**
      * Displays confirmation that a task has been deleted.
      *
-     * @param task The removed task.
+     * @param task       The removed task.
      * @param totalTasks The remaining number of tasks.
      */
     public void showTaskDeleted(Task task, int totalTasks) {
@@ -262,7 +262,7 @@ public class Ui {
      * Appends numbered task entries to an existing output message.
      *
      * @param output The output being assembled.
-     * @param tasks The tasks to append.
+     * @param tasks  The tasks to append.
      */
     private void appendTasks(StringBuilder output, List<Task> tasks) {
         for (int i = 0; i < tasks.size(); i++) {

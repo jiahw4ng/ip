@@ -1,25 +1,31 @@
 package martin.task;
 
 import java.util.List;
+import java.util.Objects;
 
 import martin.exception.IllegalCommandException;
 import martin.util.DateTimeUtil;
 
 /** Represents a task that can be completed or left incomplete. */
 public abstract class Task {
+    /** The delimiter used to specify a task priority in a command input. */
+    public static final String PRIORITY_DELIMITER = "/p";
     protected final String description;
     protected boolean isDone = false;
     private final TaskType taskType;
+    private final Priority priority;
 
     /**
      * Constructs a {@code Task} with the specified description.
      *
      * @param description The description of the task.
      * @param taskType    The type of the task.
+     * @param priority    The priority of the task.
      */
-    protected Task(String description, TaskType taskType) {
+    protected Task(String description, TaskType taskType, Priority priority) {
         this.description = description;
-        this.taskType = taskType;
+        this.taskType = Objects.requireNonNull(taskType);
+        this.priority = Objects.requireNonNull(priority);
     }
 
     /**
@@ -79,13 +85,40 @@ public abstract class Task {
     }
 
     /**
+     * Separates an optional final priority parameter from task details.
+     *
+     * @param details The task details after the command word.
+     * @return The task details without the priority parameter and its priority.
+     * @throws IllegalCommandException If the priority parameter is repeated or
+     *                                 invalid.
+     */
+    protected static BaseTaskDetails parsePriority(String details) {
+        int delimiterIndex = details.indexOf(" " + PRIORITY_DELIMITER);
+        int priorityIndex = details.startsWith(PRIORITY_DELIMITER)
+                ? 0
+                : (delimiterIndex < 0 ? -1 : delimiterIndex + 1);
+        if (priorityIndex < 0) {
+            return new BaseTaskDetails(details.trim(), Priority.LOW);
+        }
+
+        int nextPriorityIndex = details.indexOf(" " + PRIORITY_DELIMITER,
+                priorityIndex + PRIORITY_DELIMITER.length());
+        if (nextPriorityIndex >= 0) {
+            throw new IllegalCommandException("A task can have only one /p priority.");
+        }
+
+        String priorityName = details.substring(priorityIndex + PRIORITY_DELIMITER.length()).trim();
+        return new BaseTaskDetails(details.substring(0, priorityIndex).trim(), Priority.fromUserInput(priorityName));
+    }
+
+    /**
      * Returns this task's completion status and description.
      *
      * @return The display representation of this task.
      */
     @Override
     public String toString() {
-        return String.format("[%s] %s", this.getDoneString(), this.description);
+        return String.format("[%s][%s] %s", this.getDoneString(), this.priority, this.description);
     }
 
     /** Marks this task as completed. */
@@ -114,6 +147,15 @@ public abstract class Task {
      */
     public TaskType getTaskType() {
         return this.taskType;
+    }
+
+    /**
+     * Returns the priority of this task.
+     *
+     * @return The task priority.
+     */
+    public Priority getPriority() {
+        return this.priority;
     }
 
     /**
@@ -155,7 +197,8 @@ public abstract class Task {
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
 
-        Task task = createTaskFromType(taskType, description, parts);
+        Priority priority = getPriorityFromStorage(taskType, parts);
+        Task task = createTaskFromType(taskType, description, parts, priority);
 
         if (isDone) {
             task.markAsDone();
@@ -174,21 +217,40 @@ public abstract class Task {
      * @throws IllegalArgumentException If the task type is unknown or format is
      *                                  invalid.
      */
-    private static Task createTaskFromType(TaskType taskType, String description, String[] parts) {
+    private static Priority getPriorityFromStorage(TaskType taskType, String[] parts) {
+        int basePartCount = switch (taskType) {
+            case TODO -> 3;
+            case DEADLINE -> 4;
+            case EVENT -> 5;
+        };
+        if (parts.length == basePartCount) {
+            return Priority.LOW;
+        }
+        if (parts.length == basePartCount + 1) {
+            return Priority.fromStorageCode(parts[basePartCount]);
+        }
+        throw new IllegalArgumentException("Invalid task format in storage file.");
+    }
+
+    private static Task createTaskFromType(TaskType taskType, String description, String[] parts, Priority priority) {
         return switch (taskType) {
-            case TODO -> new Todo(description);
+            case TODO -> new Todo(description, priority);
             case DEADLINE -> {
                 if (parts.length < 4) {
                     throw new IllegalArgumentException("Invalid deadline format in storage file.");
                 }
-                yield new Deadline(description, DateTimeUtil.parse(parts[3]));
+                yield new Deadline(description, DateTimeUtil.parse(parts[3]), priority);
             }
             case EVENT -> {
                 if (parts.length < 5) {
                     throw new IllegalArgumentException("Invalid event format in storage file.");
                 }
-                yield new Event(description, DateTimeUtil.parse(parts[3]), DateTimeUtil.parse(parts[4]));
+                yield new Event(description, DateTimeUtil.parse(parts[3]), DateTimeUtil.parse(parts[4]), priority);
             }
         };
+    }
+
+    /** Holds task details after separating an optional priority parameter. */
+    protected record BaseTaskDetails(String details, Priority priority) {
     }
 }
