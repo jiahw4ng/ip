@@ -9,14 +9,17 @@ import martin.util.DateTimeUtil;
 public abstract class Task {
     protected final String description;
     protected boolean isDone = false;
+    private final TaskType taskType;
 
     /**
      * Constructs a {@code Task} with the specified description.
      *
      * @param description The description of the task.
+     * @param taskType    The type of the task.
      */
-    public Task(String description) {
+    protected Task(String description, TaskType taskType) {
         this.description = description;
+        this.taskType = taskType;
     }
 
     /**
@@ -29,13 +32,13 @@ public abstract class Task {
      */
     public static Task of(String input) {
         if (input.startsWith("todo")) {
-            return Todo.todoFromInputString(input);
+            return Todo.parseTodoFromInputString(input);
         }
         if (input.startsWith("deadline")) {
-            return Deadline.deadlineFromInputString(input);
+            return Deadline.parseDeadlineFromInputString(input);
         }
         if (input.startsWith("event")) {
-            return Event.eventFromInputString(input);
+            return Event.parseEventFromInputString(input);
         }
         throw new IllegalCommandException("I'm sorry, I don't know what that means!");
     }
@@ -105,6 +108,15 @@ public abstract class Task {
     }
 
     /**
+     * Returns the type of this task.
+     *
+     * @return The task type.
+     */
+    public TaskType getTaskType() {
+        return this.taskType;
+    }
+
+    /**
      * Prints the tasks in the order that the user entered them.
      *
      * @param tasks The list of tasks to print.
@@ -132,33 +144,51 @@ public abstract class Task {
      *                                  corrupted.
      */
     public static Task fromDataFormat(String line) {
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split(" \\| ", -1);
+
+        // Validate minimum parts for all task types
         if (parts.length < 3) {
             throw new IllegalArgumentException("Invalid task format in storage file: " + line);
         }
-        String type = parts[0];
+
+        TaskType taskType = TaskType.fromStorageCode(parts[0]);
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
-        Task task;
-        switch (type) {
-            case "T" -> task = new Todo(description);
-            case "D" -> {
-                if (parts.length < 4) {
-                    throw new IllegalArgumentException("Invalid deadline format in storage file: " + line);
-                }
-                task = new Deadline(description, DateTimeUtil.parse(parts[3]));
-            }
-            case "E" -> {
-                if (parts.length < 5) {
-                    throw new IllegalArgumentException("Invalid event format in storage file: " + line);
-                }
-                task = new Event(description, DateTimeUtil.parse(parts[3]), DateTimeUtil.parse(parts[4]));
-            }
-            default -> throw new IllegalArgumentException("Unknown task type in storage file: " + type);
-        }
+
+        Task task = createTaskFromType(taskType, description, parts);
+
         if (isDone) {
             task.markAsDone();
         }
+
         return task;
+    }
+
+    /**
+     * Creates a task instance based on the task type.
+     *
+     * @param taskType    The task type.
+     * @param description The task description.
+     * @param parts       The parsed parts from the storage line.
+     * @return The created task instance.
+     * @throws IllegalArgumentException If the task type is unknown or format is
+     *                                  invalid.
+     */
+    private static Task createTaskFromType(TaskType taskType, String description, String[] parts) {
+        return switch (taskType) {
+            case TODO -> new Todo(description);
+            case DEADLINE -> {
+                if (parts.length < 4) {
+                    throw new IllegalArgumentException("Invalid deadline format in storage file.");
+                }
+                yield new Deadline(description, DateTimeUtil.parse(parts[3]));
+            }
+            case EVENT -> {
+                if (parts.length < 5) {
+                    throw new IllegalArgumentException("Invalid event format in storage file.");
+                }
+                yield new Event(description, DateTimeUtil.parse(parts[3]), DateTimeUtil.parse(parts[4]));
+            }
+        };
     }
 }

@@ -118,7 +118,7 @@ public class Martin {
      * @param input The user input containing the task number.
      * @return The selected {@code Task}, or {@code null} if the index is invalid.
      */
-    private Task findTaskFromInput(String input) {
+    private Task findTaskByIndexFromInput(String input) {
         try {
             int taskNumber = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
             return this.tasks.getByOneBasedIndex(taskNumber);
@@ -134,7 +134,7 @@ public class Martin {
      * @return The response describing the deletion or an error.
      */
     private String handleDeleteTask(String input) {
-        Task task = this.findTaskFromInput(input);
+        Task task = this.findTaskByIndexFromInput(input);
         if (task == null) {
             return "I can't find that task. Use a number shown by list.";
         }
@@ -179,7 +179,7 @@ public class Martin {
      * @return The response describing the updated task or an error.
      */
     private String handleMarkTask(String input, boolean shouldMarkAsDone) {
-        Task task = this.findTaskFromInput(input);
+        Task task = this.findTaskByIndexFromInput(input);
         if (task == null) {
             return "I can't find that task. Use a number shown by list.";
         }
