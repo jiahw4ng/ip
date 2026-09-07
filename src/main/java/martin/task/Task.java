@@ -77,7 +77,7 @@ public abstract class Task {
     }
 
     /**
-     * Returns this task's completion status and description.
+     * Returns this task's completion status, description and priority.
      *
      * @return The display representation of this task.
      */
@@ -178,6 +178,7 @@ public abstract class Task {
      * @param taskType    The task type.
      * @param description The task description.
      * @param parts       The parsed parts from the storage line.
+     * @param priority    The priority of the task.
      * @return The created task instance.
      * @throws IllegalArgumentException If the task type is unknown or format is
      *                                  invalid.

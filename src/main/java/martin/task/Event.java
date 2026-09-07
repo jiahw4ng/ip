@@ -81,11 +81,15 @@ public class Event extends Task {
     public static Event parseEventFromInputString(String input) {
         BaseTaskDetails taskDetails = parsePriority(input.substring("event".length()).trim());
         String details = taskDetails.details();
-        int fromIndex = StringParserUtil.requireIndex(details, FROM_DELIMITER, "An event needs a non-empty /from date.");
-        int toIndex = StringParserUtil.requireIndex(details, TO_DELIMITER, "An event needs a non-empty /to date.");
+        int fromIndex = StringParserUtil.requireIndex(details, FROM_DELIMITER,
+                "An event needs a non-empty /from date.");
+        int toIndex = StringParserUtil.requireIndex(details, TO_DELIMITER,
+                "An event needs a non-empty /to date.");
         StringParserUtil.requireFromIndexBeforeToIndex(fromIndex, toIndex);
-        String description = StringParserUtil.requireValue(details.substring(0, fromIndex), "An event needs a non-empty description.");
-        String startDateTimeText = StringParserUtil.requireValue(details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
+        String description = StringParserUtil.requireValue(details.substring(0, fromIndex),
+                "An event needs a non-empty description.");
+        String startDateTimeText = StringParserUtil.requireValue(
+                details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
                 "An event needs a non-empty /from date.");
         String endDateTimeText = StringParserUtil.requireValue(details.substring(toIndex + TO_DELIMITER.length()),
                 "An event needs a non-empty /to date.");

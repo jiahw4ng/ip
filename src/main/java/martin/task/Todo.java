@@ -47,7 +47,8 @@ public class Todo extends Task {
      */
     public static Todo parseTodoFromInputString(String input) {
         BaseTaskDetails taskDetails = parsePriority(input.substring("todo".length()).trim());
-        String description = StringParserUtil.requireValue(taskDetails.details(), "A todo needs a non-empty description.");
+        String description = StringParserUtil.requireValue(taskDetails.details(),
+                "A todo needs a non-empty description.");
         return new Todo(description, taskDetails.priority());
     }
 

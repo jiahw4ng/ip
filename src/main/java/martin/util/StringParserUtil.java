@@ -10,7 +10,6 @@ public class StringParserUtil {
     /**
      * Returns a trimmed command value, rejecting an empty value with a clear
      * message.
-     *
      * @param value    The string to trim and validate.
      * @param errorMsg The error message to throw if the value is empty.
      * @return The trimmed non-empty string.
@@ -45,7 +44,6 @@ public class StringParserUtil {
     /**
      * Checks that the fromIndex is before the toIndex, throwing an exception if
      * not.
-     * 
      * @param fromIndex
      * @param toIndex
      */

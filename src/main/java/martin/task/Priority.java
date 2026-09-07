@@ -46,11 +46,13 @@ public enum Priority {
     }
 
     /**
-     * Creates a priority from a stored priority code.
+     * Returns the priority represented by fields from the storage file. Old storage
+     * records with no priority field are treated as low priority.
      *
-     * @param storageCode The priority code read from the storage file.
+     * @param taskType The type of task represented by the storage fields.
+     * @param parts    The fields parsed from the storage file.
      * @return The corresponding priority.
-     * @throws IllegalArgumentException If the storage code is unknown.
+     * @throws IllegalArgumentException If the storage format is invalid.
      */
     public static Priority getPriorityFromStorage(TaskType taskType, String[] parts) {
         int basePartCount = switch (taskType) {
