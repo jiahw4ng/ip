@@ -48,18 +48,18 @@ public class TasksStorage {
 
             List<String> lines = Files.readAllLines(this.filePath);
             tasks = lines.stream()
-                .map(String::trim)
-                .filter(line -> !line.isEmpty())
-                .map(line -> {
-                    try {
-                        return Task.fromDataFormat(line);
-                    } catch (IllegalCommandException | IllegalArgumentException exception) {
-                        System.out.println("Skipping corrupted or outdated task line: " + line);
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .toList();
+                    .map(String::trim)
+                    .filter(line -> !line.isEmpty())
+                    .map(line -> {
+                        try {
+                            return Task.fromDataFormat(line);
+                        } catch (IllegalCommandException | IllegalArgumentException exception) {
+                            System.out.println("Skipping corrupted or outdated task line: " + line);
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .toList();
         } catch (IOException exception) {
             throw new StorageException("Unable to load tasks from " + this.filePath + ".", exception);
         }
@@ -90,8 +90,8 @@ public class TasksStorage {
             }
 
             List<String> lines = tasks.stream()
-                .map(Task::toDataFormat)
-                .toList();
+                    .map(Task::toDataFormat)
+                    .toList();
             Files.write(this.filePath, lines);
             assert Files.exists(this.filePath)
                     && lines.size() == tasks.size()

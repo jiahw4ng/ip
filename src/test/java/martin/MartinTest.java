@@ -49,8 +49,8 @@ public class MartinTest {
 
         String output = capturedOutput.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains("Here are the matching tasks in your list:"));
-        assertTrue(output.contains("1. [T][ ] read book"));
-        assertTrue(output.contains("2. [D][ ] return book"));
+        assertTrue(output.contains("1. [T][ ][LOW] read book"));
+        assertTrue(output.contains("2. [D][ ][LOW] return book"));
     }
 
     @Test
@@ -86,5 +86,14 @@ public class MartinTest {
 
         assertEquals("Bye. Hope to see you again soon!", martin.executeCommand("bye"));
         assertFalse(martin.isRunning());
+    }
+
+    @Test
+    public void executeCommand_todoWithPriority_displaysPriority(@TempDir Path tempDir) {
+        Martin martin = new Martin(tempDir.resolve("martin.txt").toString());
+
+        String response = martin.executeCommand("todo submit report /p high");
+
+        assertTrue(response.contains("[T][ ][HIGH] submit report"));
     }
 }

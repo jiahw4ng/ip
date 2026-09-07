@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import martin.exception.IllegalCommandException;
 import martin.util.DateTimeUtil;
+import martin.util.StringParserUtil;
 
 /**
  * Represents a task occurring between specified start and end dates or times.
@@ -25,6 +26,7 @@ public class Event extends Task {
     /**
      * Constructs an {@code Event} task with a description, start time, and end
      * time.
+     * Priority defaults to {@code LOW}.
      *
      * @param description   The description of the event.
      * @param startDateTime The starting date and time of the event.
@@ -33,7 +35,22 @@ public class Event extends Task {
      *                                 {@code startDateTime}.
      */
     public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        super(description, TaskType.EVENT);
+        this(description, startDateTime, endDateTime, Priority.LOW);
+    }
+
+    /**
+     * Constructs an {@code Event} task with a description, time range, and
+     * priority.
+     *
+     * @param description   The description of the event.
+     * @param startDateTime The starting date and time of the event.
+     * @param endDateTime   The ending date and time of the event.
+     * @param priority      The priority of the event.
+     * @throws IllegalCommandException If {@code endDateTime} is before
+     *                                 {@code startDateTime}.
+     */
+    public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime, Priority priority) {
+        super(description, TaskType.EVENT, priority);
         if (endDateTime.isBefore(startDateTime)) {
             throw new IllegalCommandException("The event end date (/to) cannot be before the start date (/from).");
         }
@@ -62,20 +79,23 @@ public class Event extends Task {
      *                                 is missing or invalid.
      */
     public static Event parseEventFromInputString(String input) {
-        String details = input.substring("event".length()).trim();
-        int fromIndex = requireIndex(details, FROM_DELIMITER, "An event needs a non-empty /from date.");
-        int toIndex = requireIndex(details, TO_DELIMITER, "An event needs a non-empty /to date.");
-        if (toIndex <= fromIndex) {
-            throw new IllegalCommandException("An event needs a /from date that comes before the /to date.");
-        }
-        String description = requireValue(details.substring(0, fromIndex), "An event needs a non-empty description.");
-        String startDateTimeText = requireValue(details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
+        BaseTaskDetails taskDetails = parsePriority(input.substring("event".length()).trim());
+        String details = taskDetails.details();
+        int fromIndex = StringParserUtil.requireIndex(details, FROM_DELIMITER,
                 "An event needs a non-empty /from date.");
-        String endDateTimeText = requireValue(details.substring(toIndex + TO_DELIMITER.length()),
+        int toIndex = StringParserUtil.requireIndex(details, TO_DELIMITER,
+                "An event needs a non-empty /to date.");
+        StringParserUtil.requireFromIndexBeforeToIndex(fromIndex, toIndex);
+        String description = StringParserUtil.requireValue(details.substring(0, fromIndex),
+                "An event needs a non-empty description.");
+        String startDateTimeText = StringParserUtil.requireValue(
+                details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
+                "An event needs a non-empty /from date.");
+        String endDateTimeText = StringParserUtil.requireValue(details.substring(toIndex + TO_DELIMITER.length()),
                 "An event needs a non-empty /to date.");
         LocalDateTime startDateTime = DateTimeUtil.parse(startDateTimeText);
         LocalDateTime endDateTime = DateTimeUtil.parse(endDateTimeText);
-        return new Event(description, startDateTime, endDateTime);
+        return new Event(description, startDateTime, endDateTime, taskDetails.priority());
     }
 
     /**
@@ -85,8 +105,8 @@ public class Event extends Task {
      */
     @Override
     public String toDataFormat() {
-        return String.format("%s | %d | %s | %s | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
-                this.description,
-                DateTimeUtil.formatStorage(this.from), DateTimeUtil.formatStorage(this.to));
+        return String.format("%s | %d | %s | %s | %s | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
+                this.description, DateTimeUtil.formatStorage(this.from), DateTimeUtil.formatStorage(this.to),
+                this.getPriority().getStorageCode());
     }
 }

@@ -174,8 +174,9 @@ public class Martin {
     /**
      * Returns a response after marking or unmarking the selected task.
      *
-     * @param input The user input containing the task index.
-     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark as not done.
+     * @param input            The user input containing the task index.
+     * @param shouldMarkAsDone {@code true} to mark as done, {@code false} to mark
+     *                         as not done.
      * @return The response describing the updated task or an error.
      */
     private String handleMarkTask(String input, boolean shouldMarkAsDone) {
