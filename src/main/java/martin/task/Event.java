@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import martin.exception.IllegalCommandException;
 import martin.util.DateTimeUtil;
+import martin.util.StringParserUtil;
 
 /**
  * Represents a task occurring between specified start and end dates or times.
@@ -80,29 +81,17 @@ public class Event extends Task {
     public static Event parseEventFromInputString(String input) {
         BaseTaskDetails taskDetails = parsePriority(input.substring("event".length()).trim());
         String details = taskDetails.details();
-        int fromIndex = requireIndex(details, FROM_DELIMITER, "An event needs a non-empty /from date.");
-        int toIndex = requireIndex(details, TO_DELIMITER, "An event needs a non-empty /to date.");
-        requireFromIndexBeforeToIndex(fromIndex, toIndex);
-        String description = requireValue(details.substring(0, fromIndex), "An event needs a non-empty description.");
-        String startDateTimeText = requireValue(details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
+        int fromIndex = StringParserUtil.requireIndex(details, FROM_DELIMITER, "An event needs a non-empty /from date.");
+        int toIndex = StringParserUtil.requireIndex(details, TO_DELIMITER, "An event needs a non-empty /to date.");
+        StringParserUtil.requireFromIndexBeforeToIndex(fromIndex, toIndex);
+        String description = StringParserUtil.requireValue(details.substring(0, fromIndex), "An event needs a non-empty description.");
+        String startDateTimeText = StringParserUtil.requireValue(details.substring(fromIndex + FROM_DELIMITER.length(), toIndex),
                 "An event needs a non-empty /from date.");
-        String endDateTimeText = requireValue(details.substring(toIndex + TO_DELIMITER.length()),
+        String endDateTimeText = StringParserUtil.requireValue(details.substring(toIndex + TO_DELIMITER.length()),
                 "An event needs a non-empty /to date.");
         LocalDateTime startDateTime = DateTimeUtil.parse(startDateTimeText);
         LocalDateTime endDateTime = DateTimeUtil.parse(endDateTimeText);
         return new Event(description, startDateTime, endDateTime, taskDetails.priority());
-    }
-
-    /**
-     * Checks that the fromIndex is before the toIndex, throwing an exception if
-     * not.
-     * @param fromIndex
-     * @param toIndex
-     */
-    private static void requireFromIndexBeforeToIndex(int fromIndex, int toIndex) {
-        if (toIndex <= fromIndex) {
-            throw new IllegalCommandException("An event needs a /from date that comes before the /to date.");
-        }
     }
 
     /**

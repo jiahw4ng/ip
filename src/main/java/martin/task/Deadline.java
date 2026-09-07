@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import martin.exception.IllegalCommandException;
 import martin.util.DateTimeUtil;
+import martin.util.StringParserUtil;
 
 /**
  * Represents a task that must be completed by a specified date or time.
@@ -63,9 +64,9 @@ public class Deadline extends Task {
     public static Deadline parseDeadlineFromInputString(String input) {
         BaseTaskDetails taskDetails = parsePriority(input.substring("deadline".length()).trim());
         String details = taskDetails.details();
-        int byIndex = requireIndex(details, BY_DELIMITER, "A deadline needs a non-empty /by date.");
-        String description = requireValue(details.substring(0, byIndex), "A deadline needs a non-empty description.");
-        String deadlineText = requireValue(details.substring(byIndex + BY_DELIMITER.length()),
+        int byIndex = StringParserUtil.requireIndex(details, BY_DELIMITER, "A deadline needs a non-empty /by date.");
+        String description = StringParserUtil.requireValue(details.substring(0, byIndex), "A deadline needs a non-empty description.");
+        String deadlineText = StringParserUtil.requireValue(details.substring(byIndex + BY_DELIMITER.length()),
                 "A deadline needs a non-empty /by date.");
         LocalDateTime deadline = DateTimeUtil.parse(deadlineText);
         return new Deadline(description, deadline, taskDetails.priority());

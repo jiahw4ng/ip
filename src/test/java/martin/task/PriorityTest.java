@@ -2,7 +2,6 @@ package martin.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Test;
 
 import martin.exception.IllegalCommandException;
@@ -20,12 +19,5 @@ public class PriorityTest {
     @Test
     public void fromUserInput_unknownName_throwsIllegalCommandException() {
         assertThrows(IllegalCommandException.class, () -> Priority.fromUserInput("urgent"));
-    }
-
-    @Test
-    public void fromStorageCode_knownCode_returnsCorrespondingPriority() {
-        assertEquals(Priority.HIGH, Priority.fromStorageCode("H"));
-        assertEquals(Priority.MEDIUM, Priority.fromStorageCode("M"));
-        assertEquals(Priority.LOW, Priority.fromStorageCode("L"));
     }
 }

@@ -50,41 +50,6 @@ public abstract class Task {
     }
 
     /**
-     * Returns a trimmed command value, rejecting an empty value with a clear
-     * message.
-     *
-     * @param value    The string to trim and validate.
-     * @param errorMsg The error message to throw if the value is empty.
-     * @return The trimmed non-empty string.
-     * @throws IllegalCommandException If the trimmed string is empty.
-     */
-    public static String requireValue(String value, String errorMsg) {
-        String trimmedValue = value.trim();
-        if (trimmedValue.isEmpty()) {
-            throw new IllegalCommandException(errorMsg);
-        }
-        return trimmedValue;
-    }
-
-    /**
-     * Returns the index of a substring, rejecting a missing substring with a clear
-     * message.
-     *
-     * @param str      The string to search within.
-     * @param substr   The delimiter or substring to search for.
-     * @param errorMsg The error message to throw if the substring is not found.
-     * @return The index of the substring.
-     * @throws IllegalCommandException If the substring is not found.
-     */
-    public static int requireIndex(String str, String substr, String errorMsg) {
-        int index = str.indexOf(substr);
-        if (index < 0) {
-            throw new IllegalCommandException(errorMsg);
-        }
-        return index;
-    }
-
-    /**
      * Separates an optional final priority parameter from task details.
      *
      * @param details The task details after the command word.
@@ -197,7 +162,7 @@ public abstract class Task {
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
 
-        Priority priority = getPriorityFromStorage(taskType, parts);
+        Priority priority = Priority.getPriorityFromStorage(taskType, parts);
         Task task = createTaskFromType(taskType, description, parts, priority);
 
         if (isDone) {
@@ -217,21 +182,6 @@ public abstract class Task {
      * @throws IllegalArgumentException If the task type is unknown or format is
      *                                  invalid.
      */
-    private static Priority getPriorityFromStorage(TaskType taskType, String[] parts) {
-        int basePartCount = switch (taskType) {
-            case TODO -> 3;
-            case DEADLINE -> 4;
-            case EVENT -> 5;
-        };
-        if (parts.length == basePartCount) {
-            return Priority.LOW;
-        }
-        if (parts.length == basePartCount + 1) {
-            return Priority.fromStorageCode(parts[basePartCount]);
-        }
-        throw new IllegalArgumentException("Invalid task format in storage file.");
-    }
-
     private static Task createTaskFromType(TaskType taskType, String description, String[] parts, Priority priority) {
         return switch (taskType) {
             case TODO -> new Todo(description, priority);

@@ -52,12 +52,22 @@ public enum Priority {
      * @return The corresponding priority.
      * @throws IllegalArgumentException If the storage code is unknown.
      */
-    public static Priority fromStorageCode(String storageCode) {
-        for (Priority priority : values()) {
-            if (priority.storageCode.equals(storageCode)) {
-                return priority;
+    public static Priority getPriorityFromStorage(TaskType taskType, String[] parts) {
+        int basePartCount = switch (taskType) {
+            case TODO -> 3;
+            case DEADLINE -> 4;
+            case EVENT -> 5;
+        };
+        if (parts.length == basePartCount) {
+            return Priority.LOW;
+        }
+        if (parts.length == basePartCount + 1) {
+            for (Priority priority : values()) {
+                if (priority.storageCode.equals(parts[basePartCount])) {
+                    return priority;
+                }
             }
         }
-        throw new IllegalArgumentException("Unknown priority in storage file: " + storageCode);
+        throw new IllegalArgumentException("Invalid task format in storage file.");
     }
 }
