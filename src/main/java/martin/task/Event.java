@@ -33,7 +33,7 @@ public class Event extends Task {
      *                                 {@code startDateTime}.
      */
     public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        super(description);
+        super(description, TaskType.EVENT);
         if (endDateTime.isBefore(startDateTime)) {
             throw new IllegalCommandException("The event end date (/to) cannot be before the start date (/from).");
         }
@@ -48,7 +48,7 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return String.format("[E]%s (from: %s to: %s)", super.toString(),
+        return String.format("[%s]%s (from: %s to: %s)", this.getTaskType().getStorageCode(), super.toString(),
                 DateTimeUtil.formatDisplay(this.from), DateTimeUtil.formatDisplay(this.to));
     }
 
@@ -85,7 +85,8 @@ public class Event extends Task {
      */
     @Override
     public String toDataFormat() {
-        return String.format("E | %d | %s | %s | %s", this.isDone ? 1 : 0, this.description,
+        return String.format("%s | %d | %s | %s | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
+                this.description,
                 DateTimeUtil.formatStorage(this.from), DateTimeUtil.formatStorage(this.to));
     }
 }

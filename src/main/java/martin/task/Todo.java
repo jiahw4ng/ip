@@ -13,7 +13,7 @@ public class Todo extends Task {
      * @param description The description of the task.
      */
     public Todo(String description) {
-        super(description);
+        super(description, TaskType.TODO);
     }
 
     /**
@@ -23,7 +23,7 @@ public class Todo extends Task {
      */
     @Override
     public String toString() {
-        return "[T]" + super.toString();
+        return String.format("[%s]%s", this.getTaskType().getStorageCode(), super.toString());
     }
 
     /**
@@ -46,6 +46,7 @@ public class Todo extends Task {
      */
     @Override
     public String toDataFormat() {
-        return String.format("T | %d | %s", this.isDone ? 1 : 0, this.description);
+        return String.format("%s | %d | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
+                this.description);
     }
 }

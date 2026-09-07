@@ -24,7 +24,7 @@ public class Deadline extends Task {
      * @param deadline    The date and time by which the task should be completed.
      */
     public Deadline(String description, LocalDateTime deadline) {
-        super(description);
+        super(description, TaskType.DEADLINE);
         this.by = deadline;
     }
 
@@ -35,7 +35,8 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        return String.format("[D]%s (by: %s)", super.toString(), DateTimeUtil.formatDisplay(this.by));
+        return String.format("[%s]%s (by: %s)", this.getTaskType().getStorageCode(), super.toString(),
+                DateTimeUtil.formatDisplay(this.by));
     }
 
     /**
@@ -63,7 +64,8 @@ public class Deadline extends Task {
      */
     @Override
     public String toDataFormat() {
-        return String.format("D | %d | %s | %s", this.isDone ? 1 : 0, this.description,
+        return String.format("%s | %d | %s | %s", this.getTaskType().getStorageCode(), this.isDone ? 1 : 0,
+                this.description,
                 DateTimeUtil.formatStorage(this.by));
     }
 
