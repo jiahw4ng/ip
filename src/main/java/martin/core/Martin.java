@@ -39,13 +39,17 @@ public class Martin {
     }
 
     /**
-     * Starts and runs the main execution loop for the Martin chatbot.
+     * Starts and runs the main execution loop until the user exits or input ends.
      */
     public void run() {
         this.ui.showWelcome();
 
         while (this.isRunning) {
             String input = this.ui.readCommand();
+            if (input == null) {
+                this.isRunning = false;
+                break;
+            }
             String response = this.executeCommand(input);
             if (!response.isEmpty() && this.isRunning) {
                 System.out.println(response);

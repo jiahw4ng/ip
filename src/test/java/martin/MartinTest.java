@@ -89,6 +89,25 @@ public class MartinTest {
     }
 
     @Test
+    public void run_endOfInput_stopsMartinAndShowsGoodbye(@TempDir Path tempDir) {
+        java.io.InputStream originalInput = System.in;
+        PrintStream originalOutput = System.out;
+        ByteArrayOutputStream capturedOutput = new ByteArrayOutputStream();
+
+        try {
+            System.setIn(new ByteArrayInputStream(new byte[0]));
+            System.setOut(new PrintStream(capturedOutput, true, StandardCharsets.UTF_8));
+            new Martin(tempDir.resolve("martin.txt").toString()).run();
+        } finally {
+            System.setIn(originalInput);
+            System.setOut(originalOutput);
+        }
+
+        String output = capturedOutput.toString(StandardCharsets.UTF_8);
+        assertTrue(output.contains("Bye. Hope to see you again soon!"));
+    }
+
+    @Test
     public void executeCommand_todoWithPriority_displaysPriority(@TempDir Path tempDir) {
         Martin martin = new Martin(tempDir.resolve("martin.txt").toString());
 
