@@ -27,6 +27,7 @@ public class Main extends Application {
     private static final double WINDOW_HEIGHT = 520;
     private static final double MAX_RESPONSE_WIDTH = 540;
     private static final double MAX_COMMAND_WIDTH = 360;
+    private static final String MARTIN_FONT_FAMILY = "Garamond";
 
     /** Processes commands entered through the graphical interface. */
     private Martin martin;
@@ -134,10 +135,12 @@ public class Main extends Application {
      */
     private void appendMartinMessage(String message) {
         Label senderLabel = new Label("MARTIN");
-        senderLabel.setStyle("-fx-text-fill: #2563eb; -fx-font-size: 10px; -fx-font-weight: bold;");
+        senderLabel.setStyle("-fx-font-family: '" + MARTIN_FONT_FAMILY + "'; -fx-text-fill: #2563eb; "
+                + "-fx-font-size: 11px; -fx-font-weight: bold;");
 
         Label messageLabel = this.createWrappedLabel(message, MAX_RESPONSE_WIDTH);
-        messageLabel.setStyle("-fx-text-fill: #1f2937; -fx-font-size: 13px;");
+        messageLabel.setStyle("-fx-font-family: '" + MARTIN_FONT_FAMILY + "'; -fx-text-fill: #1f2937; "
+                + "-fx-font-size: 16px;");
 
         VBox responseCard = new VBox(5, senderLabel, messageLabel);
         responseCard.setMaxWidth(MAX_RESPONSE_WIDTH);
@@ -150,7 +153,7 @@ public class Main extends Application {
     /**
      * Creates a label that grows vertically to fit a multi-line message.
      *
-     * @param message   The message to display.
+     * @param message The message to display.
      * @param maxWidth The largest width allowed for the message.
      * @return A configured message label.
      */
