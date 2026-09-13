@@ -68,7 +68,7 @@ public class Martin {
     public String executeCommand(String input) {
         try {
             if (input == null || input.trim().isEmpty()) {
-                throw new IllegalCommandException("A command is required before I can proceed.");
+                throw new IllegalCommandException("I cannot proceed without a command.");
             }
             Command command = Command.from(input);
             return switch (command) {
@@ -140,7 +140,7 @@ public class Martin {
     private String handleDeleteTask(String input) {
         Task task = this.findTaskByIndexFromInput(input);
         if (task == null) {
-            return "That task number is not in the present list. Please use a number shown by list.";
+            return "I can find no such task in the present list. Pray use a number displayed by list.";
         }
         this.tasks.remove(task);
         this.storage.save(this.tasks);
@@ -170,7 +170,7 @@ public class Martin {
     private String handleFindTask(String input) {
         String keyword = input.substring("find".length()).trim();
         if (keyword.isEmpty()) {
-            throw new IllegalCommandException("A find command requires a non-empty keyword.");
+            throw new IllegalCommandException("A proper search requires a keyword.");
         }
         return this.ui.formatFindResults(this.tasks.find(keyword));
     }
@@ -186,7 +186,7 @@ public class Martin {
     private String handleMarkTask(String input, boolean shouldMarkAsDone) {
         Task task = this.findTaskByIndexFromInput(input);
         if (task == null) {
-            return "That task number is not in the present list. Please use a number shown by list.";
+            return "I can find no such task in the present list. Pray use a number displayed by list.";
         }
         if (shouldMarkAsDone) {
             task.markAsDone();

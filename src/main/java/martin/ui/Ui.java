@@ -21,8 +21,10 @@ public class Ui {
             """;
 
     public static final String HORIZ_LINE = "_____________________________________________________";
-    public static final String MARTIN_GREETING = "Good day. I am Martin.\nHow may I be of assistance?";
-    public static final String MARTIN_GOODBYE = "I shall take my leave. Until we meet again.";
+    public static final String MARTIN_GREETING = "How do you do? I am Martin.\n"
+            + "I stand ready to attend to your affairs.";
+    public static final String MARTIN_GOODBYE = "I must now take my leave. "
+            + "May your affairs remain in excellent order.";
 
     private static final String GRAY = "\u001B[90m";
     private static final String RESET = "\u001B[0m";
@@ -125,10 +127,10 @@ public class Ui {
      */
     public String formatTaskList(List<Task> tasks) {
         if (tasks.isEmpty()) {
-            return "There are presently no tasks in your list.";
+            return "It appears that your list enjoys a state of perfect emptiness.";
         }
 
-        StringBuilder output = new StringBuilder("Your tasks, as requested:");
+        StringBuilder output = new StringBuilder("Your engagements, as requested:");
         this.appendTasks(output, tasks);
         return output.toString();
     }
@@ -141,10 +143,10 @@ public class Ui {
      */
     public String formatFindResults(List<Task> tasks) {
         if (tasks.isEmpty()) {
-            return "I find no tasks matching that description.";
+            return "I am obliged to report that no task answers to that description.";
         }
 
-        StringBuilder output = new StringBuilder("The following tasks match your request:");
+        StringBuilder output = new StringBuilder("These engagements answer to your enquiry:");
         this.appendTasks(output, tasks);
         return output.toString();
     }
@@ -157,7 +159,8 @@ public class Ui {
      * @return The formatted confirmation message.
      */
     public String formatTaskAdded(Task task, int totalTasks) {
-        return String.format("Very well. I have added the following task:%n%s%nThere are now %d tasks in your list.",
+        return String.format("It is settled. I have entered the following matter:%n%s%n"
+                        + "Your list now contains %d tasks.",
                 task, totalTasks);
     }
 
@@ -169,7 +172,8 @@ public class Ui {
      * @return The formatted confirmation message.
      */
     public String formatTaskDeleted(Task task, int totalTasks) {
-        return String.format("The following task has been removed:%n%s%n%d tasks remain in your list.",
+        return String.format("The following matter has been removed from consideration:%n%s%n"
+                        + "%d tasks remain in your list.",
                 task, totalTasks);
     }
 
@@ -180,7 +184,7 @@ public class Ui {
      * @return The formatted confirmation message.
      */
     public String formatTaskMarked(Task task) {
-        return String.format("The task has been marked complete:%n%s", task);
+        return String.format("The following matter may now be regarded as complete:%n%s", task);
     }
 
     /**
@@ -190,7 +194,7 @@ public class Ui {
      * @return The formatted confirmation message.
      */
     public String formatTaskUnmarked(Task task) {
-        return String.format("The task has been returned to its unfinished state:%n%s", task);
+        return String.format("The following matter has been restored to its unfinished state:%n%s", task);
     }
 
     /**

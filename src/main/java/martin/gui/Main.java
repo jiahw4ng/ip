@@ -31,6 +31,7 @@ public class Main extends Application {
     private static final double MAX_MESSAGE_WIDTH = 480;
     private static final double MESSAGE_HORIZONTAL_PADDING = 24;
     private static final double MESSAGE_VERTICAL_PADDING = 16;
+    private static final String MARTIN_FONT_FAMILY = "Garamond";
 
     private Martin martin;
     private VBox messages;
@@ -108,7 +109,7 @@ public class Main extends Application {
      * @param input The command entered by the user.
      */
     private void appendUserMessage(String input) {
-        this.appendMessage("> " + input, Pos.CENTER_RIGHT, Color.LIGHTBLUE);
+        this.appendMessage("> " + input, Pos.CENTER_RIGHT, Color.LIGHTBLUE, null);
     }
 
     /**
@@ -117,7 +118,7 @@ public class Main extends Application {
      * @param message The response from Martin.
      */
     private void appendMartinMessage(String message) {
-        this.appendMessage(message, Pos.CENTER_LEFT, Color.LIGHTGRAY);
+        this.appendMessage(message, Pos.CENTER_LEFT, Color.LIGHTGRAY, MARTIN_FONT_FAMILY);
     }
 
     /**
@@ -126,10 +127,14 @@ public class Main extends Application {
      * @param message   The message to display.
      * @param alignment The side of the chat area on which to place the message.
      * @param color     The fill color of the message rectangle.
+     * @param fontFamily The font family to use, or {@code null} for the default.
      */
-    private void appendMessage(String message, Pos alignment, Color color) {
+    private void appendMessage(String message, Pos alignment, Color color, String fontFamily) {
         Label messageLabel = new Label(message);
         messageLabel.setWrapText(true);
+        if (fontFamily != null) {
+            messageLabel.setStyle("-fx-font-family: '" + fontFamily + "';");
+        }
         double messageContentWidth = MAX_MESSAGE_WIDTH - MESSAGE_HORIZONTAL_PADDING;
         messageLabel.setPrefWidth(messageContentWidth);
         messageLabel.setMaxWidth(messageContentWidth);

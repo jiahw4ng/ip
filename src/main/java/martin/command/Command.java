@@ -37,7 +37,7 @@ public enum Command {
                 return type;
             }
         }
-        throw new IllegalCommandException("I regret that I do not recognise that command.");
+        throw new IllegalCommandException("I am afraid that command is entirely unknown to me.");
     }
 
 }
