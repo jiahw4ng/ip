@@ -170,14 +170,14 @@ the storage problem when starting or saving.
 
 ## Command summary
 
-| Action | Format |
-| --- | --- |
-| Add a todo | `todo DESCRIPTION [/p PRIORITY]` |
-| Add a deadline | `deadline DESCRIPTION /by DATE_TIME [/p PRIORITY]` |
-| Add an event | `event DESCRIPTION /from DATE_TIME /to DATE_TIME [/p PRIORITY]` |
-| List tasks | `list` |
-| Find tasks | `find KEYWORD` |
-| Mark complete | `mark INDEX` |
-| Mark incomplete | `unmark INDEX` |
-| Delete a task | `delete INDEX` |
-| Exit Martin | `bye` |
+| Action          | Format                                                          |
+| --------------- | --------------------------------------------------------------- |
+| Add a todo      | `todo DESCRIPTION [/p PRIORITY]`                                |
+| Add a deadline  | `deadline DESCRIPTION /by DATE_TIME [/p PRIORITY]`              |
+| Add an event    | `event DESCRIPTION /from DATE_TIME /to DATE_TIME [/p PRIORITY]` |
+| List tasks      | `list`                                                          |
+| Find tasks      | `find KEYWORD`                                                  |
+| Mark complete   | `mark INDEX`                                                    |
+| Mark incomplete | `unmark INDEX`                                                  |
+| Delete a task   | `delete INDEX`                                                  |
+| Exit Martin     | `bye`                                                           |

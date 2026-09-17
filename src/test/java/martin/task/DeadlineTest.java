@@ -30,19 +30,19 @@ public class DeadlineTest {
 
     @Test
     public void createDeadline_missingByDelimiter_throwsIllegalCommandException() {
-        assertThrows(IllegalCommandException.class, () ->
-                Deadline.parseDeadlineFromInputString("deadline return book 2026/08/26 1830"));
+        assertThrows(IllegalCommandException.class,
+                () -> Deadline.parseDeadlineFromInputString("deadline return book 2026/08/26 1830"));
     }
 
     @Test
     public void createDeadline_emptyDescription_throwsIllegalCommandException() {
-        assertThrows(IllegalCommandException.class, () ->
-                Deadline.parseDeadlineFromInputString("deadline /by 2026/08/26 1830"));
+        assertThrows(IllegalCommandException.class,
+                () -> Deadline.parseDeadlineFromInputString("deadline /by 2026/08/26 1830"));
     }
 
     @Test
     public void createDeadline_invalidPriority_throwsIllegalCommandException() {
-        assertThrows(IllegalCommandException.class, () ->
-                Deadline.parseDeadlineFromInputString("deadline return book /by 2026/08/26 1830 /p urgent"));
+        assertThrows(IllegalCommandException.class,
+                () -> Deadline.parseDeadlineFromInputString("deadline return book /by 2026/08/26 1830 /p urgent"));
     }
 }

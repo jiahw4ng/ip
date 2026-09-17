@@ -153,7 +153,7 @@ public class Main extends Application {
     /**
      * Creates a label that grows vertically to fit a multi-line message.
      *
-     * @param message The message to display.
+     * @param message  The message to display.
      * @param maxWidth The largest width allowed for the message.
      * @return A configured message label.
      */
@@ -168,7 +168,7 @@ public class Main extends Application {
      * Adds a conversation entry aligned to the appropriate side of the transcript.
      *
      * @param messageEntry The visual representation of the message.
-     * @param alignment The side of the transcript on which to show the entry.
+     * @param alignment    The side of the transcript on which to show the entry.
      */
     private void addMessageRow(VBox messageEntry, Pos alignment) {
         HBox messageRow = new HBox(messageEntry);

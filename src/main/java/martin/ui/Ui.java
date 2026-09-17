@@ -160,7 +160,7 @@ public class Ui {
      */
     public String formatTaskAdded(Task task, int totalTasks) {
         return String.format("It is settled. I have entered the following matter:%n%s%n"
-                        + "Your list now contains %d tasks.",
+                + "Your list now contains %d tasks.",
                 task, totalTasks);
     }
 
@@ -173,7 +173,7 @@ public class Ui {
      */
     public String formatTaskDeleted(Task task, int totalTasks) {
         return String.format("The following matter has been removed from consideration:%n%s%n"
-                        + "%d tasks remain in your list.",
+                + "%d tasks remain in your list.",
                 task, totalTasks);
     }
 

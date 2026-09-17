@@ -57,8 +57,8 @@ public class TasksStorageTest {
 
     @Test
     public void load_directoryPath_throwsStorageException(@TempDir Path tempDir) {
-        StorageException exception = assertThrows(StorageException.class, () ->
-                new TasksStorage(tempDir.toString()).load());
+        StorageException exception = assertThrows(StorageException.class,
+                () -> new TasksStorage(tempDir.toString()).load());
 
         assertEquals("Unable to load tasks from " + tempDir + ".", exception.getMessage());
         assertInstanceOf(IOException.class, exception.getCause());
@@ -66,8 +66,8 @@ public class TasksStorageTest {
 
     @Test
     public void save_directoryPath_throwsStorageException(@TempDir Path tempDir) {
-        StorageException exception = assertThrows(StorageException.class, () ->
-                new TasksStorage(tempDir.toString()).save(List.of(new Todo("read book"))));
+        StorageException exception = assertThrows(StorageException.class,
+                () -> new TasksStorage(tempDir.toString()).save(List.of(new Todo("read book"))));
 
         assertEquals("Unable to save tasks to " + tempDir + ".", exception.getMessage());
         assertInstanceOf(IOException.class, exception.getCause());
