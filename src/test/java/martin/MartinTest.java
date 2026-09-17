@@ -17,13 +17,21 @@ import martin.core.Martin;
 
 public class MartinTest {
     @Test
-    public void dummyTest() {
-        assertEquals(2, 2);
+    public void executeCommand_markWithExtraArgument_returnsHelpfulError(@TempDir Path tempDir) {
+        Martin martin = new Martin(tempDir.resolve("martin.txt").toString());
+
+        martin.executeCommand("todo read book");
+
+        assertEquals("I can find no such task in the present list. Pray use a number displayed by list.",
+                martin.executeCommand("mark 1 now"));
     }
 
     @Test
-    public void anotherDummyTest() {
-        assertEquals(4, 4);
+    public void executeCommand_repeatedPriority_returnsHelpfulError(@TempDir Path tempDir) {
+        Martin martin = new Martin(tempDir.resolve("martin.txt").toString());
+
+        assertEquals("A task can have only one /p priority.",
+                martin.executeCommand("todo read book /p high /p low"));
     }
 
     @Test
