@@ -31,7 +31,7 @@ public class Event extends Task {
      * @param description   The description of the event.
      * @param startDateTime The starting date and time of the event.
      * @param endDateTime   The ending date and time of the event.
-     * @throws IllegalCommandException If {@code endDateTime} is before
+     * @throws IllegalCommandException If {@code endDateTime} is not after
      *                                 {@code startDateTime}.
      */
     public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime) {
@@ -46,13 +46,13 @@ public class Event extends Task {
      * @param startDateTime The starting date and time of the event.
      * @param endDateTime   The ending date and time of the event.
      * @param priority      The priority of the event.
-     * @throws IllegalCommandException If {@code endDateTime} is before
+     * @throws IllegalCommandException If {@code endDateTime} is not after
      *                                 {@code startDateTime}.
      */
     public Event(String description, LocalDateTime startDateTime, LocalDateTime endDateTime, Priority priority) {
         super(description, TaskType.EVENT, priority);
-        if (endDateTime.isBefore(startDateTime)) {
-            throw new IllegalCommandException("The event end date (/to) cannot be before the start date (/from).");
+        if (!endDateTime.isAfter(startDateTime)) {
+            throw new IllegalCommandException("The event end date (/to) must be after the start date (/from).");
         }
         this.from = startDateTime;
         this.to = endDateTime;
@@ -85,6 +85,12 @@ public class Event extends Task {
                 "An event needs a non-empty /from date.");
         int toIndex = StringParserUtil.requireIndex(details, TO_DELIMITER,
                 "An event needs a non-empty /to date.");
+        if (fromIndex != details.lastIndexOf(FROM_DELIMITER)) {
+            throw new IllegalCommandException("An event can have only one /from date.");
+        }
+        if (toIndex != details.lastIndexOf(TO_DELIMITER)) {
+            throw new IllegalCommandException("An event can have only one /to date.");
+        }
         StringParserUtil.requireFromIndexBeforeToIndex(fromIndex, toIndex);
         String description = StringParserUtil.requireValue(details.substring(0, fromIndex),
                 "An event needs a non-empty description.");

@@ -124,7 +124,11 @@ public class Martin {
      */
     private Task findTaskByIndexFromInput(String input) {
         try {
-            int taskNumber = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
+            String[] inputParts = input.trim().split("\\s+");
+            if (inputParts.length != 2) {
+                return null;
+            }
+            int taskNumber = Integer.parseInt(inputParts[1]);
             return this.tasks.getByOneBasedIndex(taskNumber);
         } catch (NumberFormatException exception) {
             return null;
